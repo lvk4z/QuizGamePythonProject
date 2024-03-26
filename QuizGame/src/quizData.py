@@ -1,4 +1,4 @@
-quizData = [
+quiz_data = [
     {
         "question": "Jakiego operatora używamy do wykonania dzielenia bez reszty?",
         "choices": ["//", "/", "%", "**"],

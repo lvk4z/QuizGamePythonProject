@@ -1,42 +1,42 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from quizData import quizData
+from quizData import quiz_data
 
 
 score = 0
-currentQuestion = 0
+current_question = 0
 
 
 def showQuestion():
-    global currentQuestion
-    question = quizData[currentQuestion]
-    questionLabel.config(text=question["question"])
+    global current_question
+    question = quiz_data[current_question]
+    question_label.config(text=question["question"])
     choices = question["choices"]
 
     for i in range(4):
-        choiceBtns[i].config(text=choices[i], state="normal")
+        choice_btns[i].config(text=choices[i], state="normal")
 
-    checkLabel.config(text="")
-    nextButton.pack_forget()
+    check_label.config(text="")
+    next_button.pack_forget()
 
 
 def checkAnswer(choice):
-    global score, currentQuestion
-    question = quizData[currentQuestion]
-    selected = choiceBtns[choice].cget("text")
+    global score, current_question
+    question = quiz_data[current_question]
+    selected = choice_btns[choice].cget("text")
     if selected == question["answer"]:
         score += 1
-        scoreLabel.config(text="Wynik: {}".format(score))
-        checkLabel.config(text="Poprawna odpowiedź", foreground="green")
+        score_label.config(text="Wynik: {}".format(score))
+        check_label.config(text="Poprawna odpowiedź", foreground="green")
     else:
-        checkLabel.config(text="Zła odpowiedź", foreground="red")
-    nextButton.pack()
+        check_label.config(text="Zła odpowiedź", foreground="red")
+    next_button.pack()
 
 
 def nextQuestion():
-    global currentQuestion
-    currentQuestion += 1
-    if currentQuestion < len(quizData):
+    global current_question
+    current_question += 1
+    if current_question < len(quiz_data):
         showQuestion()
     else:
         messagebox.showinfo("Koniec","Twój wynik: {}".format(score))
@@ -44,47 +44,47 @@ def nextQuestion():
 
 
 def mainT1(frame):
-    global root, questionLabel, choiceBtns, checkLabel, scoreLabel, nextButton
+    global root, question_label, choice_btns, check_label, score_label, next_button
 
     root = frame
-    questionLabel = ttk.Label(
+    question_label = ttk.Label(
         root,
         anchor="center",
         wraplength=500,
         padding=10
     )
-    questionLabel.pack(pady=10)
+    question_label.pack(pady=10)
 
-    choiceBtns = []
+    choice_btns = []
     for i in range(4):
         button = ttk.Button(
             root,
             command=lambda i=i: checkAnswer(i)
         )
         button.pack(pady=5)
-        choiceBtns.append(button)
+        choice_btns.append(button)
 
-    checkLabel = ttk.Label(
+    check_label = ttk.Label(
         root,
         anchor="center",
         padding=10
     )
-    checkLabel.pack(pady=10)
+    check_label.pack(pady=10)
 
-    scoreLabel = ttk.Label(
+    score_label = ttk.Label(
         root,
         text="Wynik: {}".format(score),
         anchor="center",
         padding=10
     )
-    scoreLabel.pack(pady=10)
+    score_label.pack(pady=10)
 
-    nextButton = ttk.Button(
+    next_button = ttk.Button(
         root,
         text="Next",
         command=nextQuestion
     )
-    nextButton.pack(pady=10)
+    next_button.pack(pady=10)
 
     showQuestion()
 

@@ -7,36 +7,36 @@ def main():
     root.title("QuizGame")
     root.geometry("600x600")
     def uruchom_tryb1():
-        titleLabel.pack_forget()
-        przyciskTryb1.pack_forget()
-        przyciskTryb2.pack_forget()
+        title_label.pack_forget()
+        przycisk_tryb1.pack_forget()
+        przycisk_tryb2.pack_forget()
         tryb1.pack()
     
     tryb1 = ttk.Frame(root)
     tryb2_frame = ttk.Frame(root)
 
-    titleLabel = ttk.Label(
+    title_label = ttk.Label(
         root,
         text="QuizGame",
         font=(30),
         anchor="center",
         padding=20
     )
-    titleLabel.pack()
+    title_label.pack()
 
-    przyciskTryb1 = ttk.Button(
+    przycisk_tryb1 = ttk.Button(
         root,
         text="Tryb 1 (ABCD)",
         command=uruchom_tryb1
     )
-    przyciskTryb1.pack(pady=10)
+    przycisk_tryb1.pack(pady=10)
 
-    przyciskTryb2 = ttk.Button(
+    przycisk_tryb2 = ttk.Button(
         root,
         text="Tryb 2 (do zrobienia)",
         state="disabled"
     )
-    przyciskTryb2.pack(pady=10)
+    przycisk_tryb2.pack(pady=10)
 
     mainT1(tryb1)
 
