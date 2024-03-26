@@ -80,5 +80,12 @@ quiz_data = [
         "choices": ["Decimal", "Math", "Numpy", "IEE 754"],
         "answer": "Decimal",
         "category": "python"
+    },
+    {
+        "question": "Jak skonwertować inta na stringa i stringa na inta w Pythonie?",
+        "choices": ["string(), int()", "str(), int()", "str(), stoi()", "string(), integer()"],
+        "answer": "str(), int()",
+        "category": "python"
     }
+    
 ]
