@@ -1,12 +1,15 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from quizData import quiz_data
+import json
+import random
 
 
 score = 0
 current_question = 0
-
-
+f = open("data_quiz.json", encoding="utf-8")
+quiz_data = json.load(f)["data_quiz"]
+random.shuffle(quiz_data)
+#print(quiz_data)
 def showQuestion():
     global current_question
     question = quiz_data[current_question]
