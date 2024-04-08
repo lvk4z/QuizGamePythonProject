@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from mode1 import mainT1
-
+import time
 def main():
+    global root
     root = tk.Tk()
     root.title("QuizGame")
     root.geometry("600x600")
@@ -11,6 +12,7 @@ def main():
         przycisk_tryb1.pack_forget()
         przycisk_tryb2.pack_forget()
         tryb1.pack()
+        entry = mainT1(tryb1)
     
     tryb1 = ttk.Frame(root)
     tryb2_frame = ttk.Frame(root)
@@ -38,9 +40,6 @@ def main():
     )
     przycisk_tryb2.pack(pady=10)
 
-    mainT1(tryb1)
-
     root.mainloop()
-
 if __name__ == "__main__":
     main()
