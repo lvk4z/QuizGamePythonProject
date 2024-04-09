@@ -5,6 +5,7 @@ from customtkinter import *
 
 def main():
     root = CTk()
+    
     root.geometry("1000x600")
     root.title("QuizGame")
     set_appearance_mode("black")
