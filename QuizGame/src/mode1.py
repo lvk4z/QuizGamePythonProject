@@ -40,7 +40,6 @@ def update_time():
         return
     count += 1
 
-    #print(count)
 
     secondEntry.config(text=str(count))
     if(count == 8):
