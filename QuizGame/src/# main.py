@@ -1,15 +1,66 @@
+# main
 import tkinter as tk
 from tkinter import ttk, messagebox
-import json
-import random
-import time
+from customtkinter import *
+from mode1 import mainT1
 
+
+def main():
+    global root
+    root = CTk()
+    
+    root.geometry("1000x600")
+    root.title("QuizGame")
+    set_appearance_mode("black")
+    
+    def uruchom_tryb1():
+        title_label.pack_forget()
+        przycisk_tryb1.pack_forget()
+        przycisk_tryb2.pack_forget()
+        tryb1.pack()
+    
+    tryb1 = tk.Frame(root, background="black", height=1200)
+    tryb2_frame = tk.Frame(root)
+
+    title_label = ttk.Label(
+        root,
+        text="QuizGame",
+        font=('Arial' ,30),
+        anchor="center",
+        padding=20
+    )
+    title_label.pack()
+
+    przycisk_tryb1 = tk.Button(
+        root,
+        text="Tryb 1 (ABCD)",
+        command=uruchom_tryb1,
+        width=300,
+        bg="white"
+    )
+    przycisk_tryb1.pack(pady=10)
+
+    przycisk_tryb2 = ttk.Button(
+        root,
+        text="Tryb 2 (do zrobienia)",
+        state="disabled"
+    )
+    przycisk_tryb2.pack(pady=10)
+
+    mainT1(tryb1)
+
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
+
+#mode1
+import tkinter as tk
+from tkinter import ttk, messagebox
+from quizData import quiz_data
 
 score = 0
 current_question = 0
-f = open("C:/Users/48516/Desktop/QuizGamePythonProject/QuizGame/src/data_quiz.json", encoding="utf-8")
-quiz_data = json.load(f)["data_quiz"]
-random.shuffle(quiz_data)
 
 def showQuestion():
     global current_question
@@ -19,10 +70,6 @@ def showQuestion():
 
     for i in range(4):
         choice_labels[i].config(text=choices[i], bg="#003366", fg="white", cursor="hand2", relief=tk.RAISED, bd=2)
-
-
-
-
 
 def checkAnswer(choice):
     global score, current_question
@@ -43,8 +90,6 @@ def checkAnswer(choice):
         messagebox.showinfo("Koniec","Twój wynik: {}".format(score))
         root.destroy()
 
-
-
 def nextQuestion():
     global current_question
     current_question += 1
@@ -54,10 +99,10 @@ def nextQuestion():
         messagebox.showinfo("Koniec","Twój wynik: {}".format(score))
         root.destroy()
 
-
 def mainT1(frame):
     global root, question_label, choice_labels, check_label, score_label, next_button
     root = frame
+    
     score_label = ttk.Label(
             root,
             text="Wynik: {}".format(score),
@@ -102,6 +147,4 @@ def mainT1(frame):
         choice_labels.append(label)
 
     showQuestion()
-
-
 

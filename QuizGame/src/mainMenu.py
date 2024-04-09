@@ -1,26 +1,27 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from mode1 import mainT1
+from customtkinter import *
 
 def main():
-    root = tk.Tk()
+    root = CTk()
+    root.geometry("1000x600")
     root.title("QuizGame")
-    root.geometry("600x600")
+    set_appearance_mode("black")
     def uruchom_tryb1():
         title_label.pack_forget()
         przycisk_tryb1.pack_forget()
         przycisk_tryb2.pack_forget()
         tryb1.pack()
     
-    tryb1 = ttk.Frame(root)
-    tryb2_frame = ttk.Frame(root)
+    tryb1 = tk.Frame(root, background="black", height=1200)
+    tryb2_frame = tk.Frame(root, background="black", height=1200)
 
-    title_label = ttk.Label(
+    title_label = tk.Label(
         root,
         text="QuizGame",
-        font=(30),
+        font=('Arial' ,30),
         anchor="center",
-        padding=20
     )
     title_label.pack()
 
