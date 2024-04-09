@@ -2,11 +2,13 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from mode1 import mainT1
 from customtkinter import *
+from ttkbootstrap import *
 
 def main():
     root = CTk()
-    
-    root.geometry("1000x600")
+    style = Style(theme='darkly')  # You can change 'darkly' to other available themes
+    root.style = style
+    root.geometry("1000x650")
     root.title("QuizGame")
     set_appearance_mode("black")
     def uruchom_tryb1():
@@ -25,19 +27,24 @@ def main():
         font=('Arial' ,30),
         anchor="center",
     )
-    title_label.pack()
+    title_label.pack(pady=20)
 
-    przycisk_tryb1 = ttk.Button(
+    przycisk_tryb1 = tk.Button(
         root,
         text="Tryb 1 (ABCD)",
-        command=uruchom_tryb1
+        command=uruchom_tryb1,
+        font=('Arial', 30),
+        width=300
     )
     przycisk_tryb1.pack(pady=10)
 
-    przycisk_tryb2 = ttk.Button(
+    przycisk_tryb2 = tk.Button(
         root,
         text="Tryb 2 (do zrobienia)",
-        state="disabled"
+        state="disabled",
+        font=('Arial', 30),
+        width=300
+
     )
     przycisk_tryb2.pack(pady=10)
 

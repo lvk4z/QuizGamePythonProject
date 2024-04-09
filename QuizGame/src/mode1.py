@@ -11,21 +11,21 @@ f = open("C:/Users/48516/Desktop/QuizGamePythonProject/QuizGame/src/data_quiz.js
 quiz_data = json.load(f)["data_quiz"]
 random.shuffle(quiz_data)
 
+
 def showQuestion():
-    global current_question
+    global current_question, time_left
+
     question = quiz_data[current_question]
     question_label.config(text=question["question"])
     choices = question["choices"]
-
+    time_left = 10
+    timer_progress['value'] = 100
     for i in range(4):
         choice_labels[i].config(text=choices[i], bg="#003366", fg="white", cursor="hand2", relief=tk.RAISED, bd=2)
 
 
-
-
-
 def checkAnswer(choice):
-    global score, current_question
+    global score, current_question, time_left
     
     question = quiz_data[current_question]
     selected = choice_labels[choice].cget("text")
@@ -34,14 +34,20 @@ def checkAnswer(choice):
     if selected == question["answer"]:
         score += 1
         score_label.config(text="Wynik: {}".format(score))
-        choice_labels[choice].config(bg="#6B8E23", fg="#003366", relief=tk.SOLID, bd=4)
+        choice_labels[choice].config(bg="#b2b234", fg="#003366", relief=tk.SOLID, bd=4)
+        print("helo")
+        time_left = 12
+        timer_progress['value'] = 100
         root.after(2000, nextQuestion)
+        
     else:
         choice_labels[choice].config(bg="#8B0000", fg="white", relief=tk.SOLID, bd=4)
-        for i in range(4):
-            choice_labels[i].config(state="disabled")
+        time_left = 0;
+        for label in choice_labels:
+            label.unbind("<Button-1>")
         messagebox.showinfo("Koniec","Twój wynik: {}".format(score))
-        root.destroy()
+
+        
 
 
 
@@ -52,19 +58,40 @@ def nextQuestion():
         showQuestion()
     else:
         messagebox.showinfo("Koniec","Twój wynik: {}".format(score))
-        root.destroy()
+        
+
+def update_timer():
+        global time_left
+        time_left -= 1
+        timer_progress['value'] = time_left * 10
+        if time_left == 0:
+            messagebox.showinfo("Koniec czasu to koniec gry", "Twój wynik to : {}".format(score))
+            
+        else:
+            root.after(1000, update_timer)
+
+def start_timer():
+    global time_left
+    time_left = 10
+    timer_progress['value'] = 100
+    update_timer()
 
 
 def mainT1(frame):
-    global root, question_label, choice_labels, check_label, score_label, next_button
+    global root, question_label, choice_labels, check_label, score_label,timer_progress
     root = frame
+    
+    
+
     score_label = ttk.Label(
             root,
-            text="Wynik: {}".format(score),
+            text="⭐ x{}".format(score),
             anchor="center",
             padding=10,
             background="#222222",
-            foreground="white" 
+            font=('Arial' ,25),
+            foreground="yellow" 
+
         )
     score_label.pack(pady=10)
     
@@ -83,8 +110,14 @@ def mainT1(frame):
         relief=tk.GROOVE 
     )
     question_label.pack(pady=80,padx=10)
-    timer_label = tk.Label(root,background="black")
-    timer_label.pack(pady=20) 
+    timer_frame = tk.Frame(root, background="black")
+    timer_frame.pack(pady=10)
+    
+    timer_label = tk.Label(timer_frame, text="⏰ ", background="black", foreground="white", font=('Arial', 20))
+    timer_label.pack(side=tk.LEFT)
+
+    timer_progress = ttk.Progressbar(timer_frame, orient="horizontal", length=200, mode="determinate")
+    timer_progress.pack(side=tk.LEFT)
     choice_labels = []
     for i in range(4):
         label = tk.Label(
@@ -101,6 +134,7 @@ def mainT1(frame):
         label.pack(pady=5, padx=50)
         choice_labels.append(label)
 
+    start_timer()
     showQuestion()
 
 
