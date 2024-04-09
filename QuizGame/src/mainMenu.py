@@ -13,6 +13,7 @@ def main():
         przycisk_tryb1.pack_forget()
         przycisk_tryb2.pack_forget()
         tryb1.pack()
+        entry = mainT1(tryb1)
     
     tryb1 = tk.Frame(root, background="black", height=1200)
     tryb2_frame = tk.Frame(root, background="black", height=1200)
@@ -39,9 +40,6 @@ def main():
     )
     przycisk_tryb2.pack(pady=10)
 
-    mainT1(tryb1)
-
     root.mainloop()
-
 if __name__ == "__main__":
     main()
