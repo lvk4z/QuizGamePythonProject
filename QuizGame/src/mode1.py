@@ -1,141 +1,101 @@
-import tkinter as tk
-from tkinter import ttk, messagebox
-import json
+import sys
+
+# basic func imports
+import numpy
+import pandas
 import random
-import time
 
+import pygame
+from pygame.locals import *
+import cv2
 
-score = 0
-current_question = 0
-f = open("C:/Users/48516/Desktop/QuizGamePythonProject/QuizGame/src/data_quiz.json", encoding="utf-8")
-quiz_data = json.load(f)["data_quiz"]
-random.shuffle(quiz_data)
+GREEN = (102, 163, 72)
+BLACK = (0, 0, 0)
+def draw_pulsating_circle(window, center, radius, min_radius, max_radius, thickness, color, pulse_speed):
+ 
+    pulse_color = GREEN 
+    pulse_progress = pygame.time.get_ticks() % pulse_speed / pulse_speed  
+    gradient_color = [int(pulse_color[channel] * (1 - pulse_progress)) for channel in range(3)]
 
+    pygame.draw.circle(window, color, center, radius, thickness)
+    pygame.draw.circle(window, gradient_color, center, radius, 0) 
 
-def showQuestion():
-    global current_question, time_left
+    pulse_radius = min_radius + ((max_radius - min_radius) / 2) * (1 + pulse_progress - 0.5) / 0.5
+    pygame.draw.circle(window, color, center, int(pulse_radius), thickness)
 
-    question = quiz_data[current_question]
-    question_label.config(text=question["question"])
-    choices = question["choices"]
-    time_left = 10
-    timer_progress['value'] = 100
-    for i in range(4):
-        choice_labels[i].config(text=choices[i], bg="#003366", fg="white", cursor="hand2", relief=tk.RAISED, bd=2)
+def drawProgressBar(surface, color, rect, progress):
+    filled_rect = pygame.Rect(rect.left, rect.top, rect.width * progress, rect.height)
+    pygame.draw.rect(surface, color, filled_rect)
 
+    pygame.draw.rect(surface, (0, 0, 0), rect, 2)
 
-def checkAnswer(choice):
-    global score, current_question, time_left
-    
-    question = quiz_data[current_question]
-    selected = choice_labels[choice].cget("text")
-    for i in range(4):
-        choice_labels[i].config(cursor="")
-    if selected == question["answer"]:
-        score += 1
-        score_label.config(text="Wynik: {}".format(score))
-        choice_labels[choice].config(bg="#b2b234", fg="#003366", relief=tk.SOLID, bd=4)
-        print("helo")
-        time_left = 12
-        timer_progress['value'] = 100
-        root.after(2000, nextQuestion)
-        
+textAlignLeft = 0
+textAlignRight = 1
+textAlignCenter = 2
+textAlignBlock = 3
+def drawText(surface, text, color, rect, font, align=textAlignLeft, aa=True, bkg=None):
+
+    lineSpacing = -2
+    spaceWidth, fontHeight = font.size(" ")[0], font.size("Tg")[1]
+
+    listOfWords = str(text).split(" ")
+    if bkg:
+        imageList = [font.render(word, 1, color, bkg) for word in listOfWords]
+        for image in imageList: image.set_colorkey(bkg)
     else:
-        choice_labels[choice].config(bg="#8B0000", fg="white", relief=tk.SOLID, bd=4)
-        time_left = 0;
-        for label in choice_labels:
-            label.unbind("<Button-1>")
-        messagebox.showinfo("Koniec","Twój wynik: {}".format(score))
+        imageList = [font.render(word, aa, color) for word in listOfWords]
 
-        
-
-
-
-def nextQuestion():
-    global current_question
-    current_question += 1
-    if current_question < len(quiz_data):
-        showQuestion()
-    else:
-        messagebox.showinfo("Koniec","Twój wynik: {}".format(score))
-        
-
-def update_timer():
-        global time_left
-        time_left -= 1
-        timer_progress['value'] = time_left * 10
-        if time_left == 0:
-            messagebox.showinfo("Koniec czasu to koniec gry", "Twój wynik to : {}".format(score))
-            
+    maxLen = rect[2]
+    lineLenList = [0]
+    lineList = [[]]
+    for image in imageList:
+        width = image.get_width()
+        lineLen = lineLenList[-1] + len(lineList[-1]) * spaceWidth + width
+        if len(lineList[-1]) == 0 or lineLen <= maxLen:
+            lineLenList[-1] += width
+            lineList[-1].append(image)
         else:
-            root.after(1000, update_timer)
+            lineLenList.append(width)
+            lineList.append([image])
 
-def start_timer():
-    global time_left
-    time_left = 10
-    timer_progress['value'] = 100
-    update_timer()
+    lineBottom = rect[1]
+    lastLine = 0
+    for lineLen, lineImages in zip(lineLenList, lineList):
+        lineLeft = rect[0]
+        if align == textAlignRight:
+            lineLeft += + rect[2] - lineLen - spaceWidth * (len(lineImages)-1)
+        elif align == textAlignCenter:
+            lineLeft += (rect[2] - lineLen - spaceWidth * (len(lineImages)-1)) // 2
+        elif align == textAlignBlock and len(lineImages) > 1:
+            spaceWidth = (rect[2] - lineLen) // (len(lineImages)-1)
+        if lineBottom + fontHeight > rect[1] + rect[3]:
+            break
+        lastLine += 1
+        for i, image in enumerate(lineImages):
+            x, y = lineLeft + i*spaceWidth, lineBottom
+            surface.blit(image, (round(x), y))
+            lineLeft += image.get_width() 
+        lineBottom += fontHeight + lineSpacing
 
+    if lastLine < len(lineList):
+        drawWords = sum([len(lineList[i]) for i in range(lastLine)])
+        remainingText = ""
+        for text in listOfWords[drawWords:]: remainingText += text + " "
+        return remainingText
+    return ""
 
-def mainT1(frame):
-    global root, question_label, choice_labels, check_label, score_label,timer_progress
-    root = frame
+def game(window, width, height, clock):
+    # ładowanie obrazków
     
-    
 
-    score_label = ttk.Label(
-            root,
-            text="⭐ x{}".format(score),
-            anchor="center",
-            padding=10,
-            background="#222222",
-            font=('Arial' ,25),
-            foreground="yellow" 
+    bg_img = pygame.image.load('QuizGame/src/resources/game/background1.jpg').convert_alpha()
 
-        )
-    score_label.pack(pady=10)
-    
-    
-    question_label = tk.Label(
-        root,
-        anchor="center",
-        wraplength=800,
-        width=800,
-        height=4,
-        background="#b2b234",  
-        font=('Arial' ,25),
-     
-        foreground="white",  
-        borderwidth=4, 
-        relief=tk.GROOVE 
-    )
-    question_label.pack(pady=80,padx=10)
-    timer_frame = tk.Frame(root, background="black")
-    timer_frame.pack(pady=10)
-    
-    timer_label = tk.Label(timer_frame, text="⏰ ", background="black", foreground="white", font=('Arial', 20))
-    timer_label.pack(side=tk.LEFT)
-
-    timer_progress = ttk.Progressbar(timer_frame, orient="horizontal", length=200, mode="determinate")
-    timer_progress.pack(side=tk.LEFT)
-    choice_labels = []
-    for i in range(4):
-        label = tk.Label(
-            root,
-            width=700,
-            bg="#003366",  
-            fg="white",   
-            font=('Arial' ,27),
-            padx=20,      
-            pady=10,      
-               
-        )
-        label.bind("<Button-1>", lambda event, i=i: checkAnswer(i))
-        label.pack(pady=5, padx=50)
-        choice_labels.append(label)
-
-    start_timer()
-    showQuestion()
-
-
-
+    time_left = 30
+    running = True
+    start_time = pygame.time.get_ticks()
+    while running:
+        time_left = 30 - (pygame.time.get_ticks()-start_time)/1000
+        if int(time_left) >= 0:
+            window.blit(bg_img,(0,0))
+        
+        window.blit(bg_img,(0,0))
