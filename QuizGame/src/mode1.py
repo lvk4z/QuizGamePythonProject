@@ -1,147 +1,137 @@
-import tkinter as tk
-from tkinter import ttk, messagebox
-import json
+import sys
+import pandas
+import pygame
+from pygame.locals import *
+from utils import  show_friends, draw_background, draw_lifebuoys, draw_options, draw_question, draw_score_table,draw_timer
 import random
-import time
 
+OLIVE_GREEN = (193, 203, 15)
+def use_50_50(abcd):
+        incorrect_answers = [i for i, ans in enumerate(abcd) if not ans[1]]
+        return random.sample(incorrect_answers, 2)
 
-score = 0
-current_question = 0
-f = open("data_quiz.json", encoding="utf-8")
-quiz_data = json.load(f)["data_quiz"]
-random.shuffle(quiz_data)
-
-
-def showQuestion():
-    global current_question, time_left
-
-    question = quiz_data[current_question]
-    question_label.config(text=question["question"])
-    choices = question["choices"]
-    time_left = 100
-    timer_progress['value'] = 100
-    for i in range(4):
-        choice_labels[i].config(text=choices[i], bg="#003366", fg="white", cursor="hand2", relief=tk.RAISED, bd=2, state="active")
-
-
-def checkAnswer(choice):
-    global score, current_question, time_left
+def mode1_play(window, width):
+    bg_img = pygame.image.load('QuizGame/src/resources/game/bg.jpg').convert_alpha()
+    option_hover = pygame.image.load('QuizGame/src/resources/game/answer_hover.png').convert_alpha()
+    score_table = [pygame.image.load('QuizGame/src/resources/game/score_table1.jpg').convert_alpha(),
+                    pygame.image.load('QuizGame/src/resources/game/score_table2.jpg').convert_alpha(),
+                    pygame.image.load('QuizGame/src/resources/game/score_table3.jpg').convert_alpha(),
+                    pygame.image.load('QuizGame/src/resources/game/score_table4.jpg').convert_alpha(),
+                    pygame.image.load('QuizGame/src/resources/game/score_table5.jpg').convert_alpha(),
+                    pygame.image.load('QuizGame/src/resources/game/score_table6.jpg').convert_alpha(),
+                    pygame.image.load('QuizGame/src/resources/game/score_table7.jpg').convert_alpha(),
+                    pygame.image.load('QuizGame/src/resources/game/score_table8.jpg').convert_alpha(),
+                    pygame.image.load('QuizGame/src/resources/game/score_table9.jpg').convert_alpha(),
+                    pygame.image.load('QuizGame/src/resources/game/score_table10.jpg').convert_alpha(),
+                    pygame.image.load('QuizGame/src/resources/game/score_table11.jpg').convert_alpha(),
+                    pygame.image.load('QuizGame/src/resources/game/score_table12.jpg').convert_alpha()]
     
-    question = quiz_data[current_question]
-    selected = choice_labels[choice].cget("text")
-    for i in range(4):
-        choice_labels[i].config(cursor="")
-    if selected == question["answer"]:
-        score += 1
-        score_label.config(text="Wynik: {}".format(score))
-        choice_labels[choice].config(bg="#b2b234", fg="#003366", relief=tk.SOLID, bd=4)
-        print("helo")
-        
-    else:
-        choice_labels[choice].config(bg="#8B0000", fg="white", relief=tk.SOLID, bd=4)
-        #time_left = 0;
-        #messagebox.showinfo("Koniec","Twój wynik: {}".format(score))
-    for label in choice_labels:
-        label.config(state="disabled")
-    time_left = 120
-    timer_progress['value'] = 100
-    root.after(2000, nextQuestion)
+    lifebuoy_50 =  pygame.image.load('QuizGame/src/resources/game/lifebuoy_50.png').convert_alpha()
+    lifebuoy_friend =  pygame.image.load('QuizGame/src/resources/game/lifebuoy_friend.png').convert_alpha()
+    lifebuoy_time =  pygame.image.load('QuizGame/src/resources/game/lifebuoy_time.png').convert_alpha()
 
-        
+    q_base_easy = pandas.read_excel('QuizGame/src/resources/questionsBase.xlsx', "easy", usecols = "A,B,C,D,E,F").to_dict('index')
+    q_base_medium = pandas.read_excel('QuizGame/src/resources/questionsBase.xlsx', "medium", usecols = "A,B,C,D,E,F").to_dict('index')
+    q_base_hard = pandas.read_excel('QuizGame/src/resources/questionsBase.xlsx', "hard", usecols = "A,B,C,D,E,F").to_dict('index')
 
+    timerfont = pygame.font.SysFont('arial', 130)
+    qafont = pygame.font.SysFont('arial', 22)
+    full_time = 30
+    time_left = 30
+    question_number = 0
+    running = True
+    load_next_question = True
+    used_lifebuoy_50 = False
+    used_lifebuoy_friend = False
+    used_lifebuoy_time = False
+    start_time = pygame.time.get_ticks()
+    hidden_answers = []
 
-
-def nextQuestion():
-    global current_question
-    current_question += 1
-    if current_question < len(quiz_data):
-        showQuestion()
-    else:
-        messagebox.showinfo("Koniec","Twój wynik: {}".format(score))
-        
-
-def update_timer():
-        global time_left
-        print(time_left)
-        time_left -= 1
-        timer_progress['value'] = time_left
-        if time_left == 0:
-            #messagebox.showinfo("Koniec czasu to koniec gry", "Twój wynik to : {}".format(score))
-            root.after(2000, NotAnswered)
-            
-        else:
-            root.after(100, update_timer)
-
-def NotAnswered():
-    nextQuestion()
-    start_timer()
-
-def start_timer():
-    global time_left
-    time_left = 100
-    timer_progress['value'] = 100
-    update_timer()
-
-
-def mainT1(frame):
-    global root, question_label, choice_labels, check_label, score_label,timer_progress
-    root = frame
-    
     
 
-    score_label = ttk.Label(
-            root,
-            text="⭐ x{}".format(score),
-            anchor="center",
-            padding=10,
-            background="#222222",
-            font=('Arial' ,25),
-            foreground="yellow" 
+    while running:
+        mouse_pointer = pygame.mouse.get_pos()
+        time_left = full_time - (pygame.time.get_ticks() - start_time) / 1000
 
-        )
-    score_label.pack(pady=10)
-    
-    
-    question_label = tk.Label(
-        root,
-        anchor="center",
-        wraplength=800,
-        width=800,
-        height=4,
-        background="#b2b234",  
-        font=('Arial' ,25),
-     
-        foreground="white",  
-        borderwidth=4, 
-        relief=tk.GROOVE 
-    )
-    question_label.pack(pady=100,padx=10)
-    timer_frame = tk.Frame(root, background="black")
-    timer_frame.pack(pady=10)
-    
-    timer_label = tk.Label(timer_frame, text="⏰ ", background="black", foreground="white", font=('Arial', 20))
-    timer_label.pack(side=tk.LEFT)
+        if  int(time_left) <= 0 or question_number >= 12:
+            sys.exit()
+            running = False
 
-    timer_progress = ttk.Progressbar(timer_frame, orient="horizontal", length=200, mode="determinate")
-    timer_progress.pack(side=tk.LEFT)
-    choice_labels = []
-    for i in range(4):
-        label = tk.Label(
-            root,
-            width=700,
-            bg="#003366",  
-            fg="white",   
-            font=('Arial' ,27),
-            padx=20,      
-            pady=10,      
-               
-        )
-        label.bind("<Button-1>", lambda event, k=i: checkAnswer(k))
-        label.pack(pady=5, padx=50)
-        choice_labels.append(label)
+        draw_background(window, bg_img)
+        draw_timer(window, timerfont, time_left, width)
+        draw_score_table(window, score_table, question_number)
 
-    start_timer()
-    showQuestion()
+        if load_next_question:
+            hidden_answers = []
+            if question_number <= 3:
+                Q = q_base_easy[question_number]["PYTANIE"]
+                ABCD = [(q_base_easy[question_number]["A"], True), (q_base_easy[question_number]["B"], False),
+                        (q_base_easy[question_number]["C"], False), (q_base_easy[question_number]["D"], False)]
+                load_next_question = False
+            elif question_number <= 7:
+                Q = q_base_medium[question_number - 4]["PYTANIE"]
+                ABCD = [(q_base_medium[question_number - 4]["A"], True), (q_base_medium[question_number - 4]["B"], False),
+                        (q_base_medium[question_number - 4]["C"], False), (q_base_medium[question_number - 4]["D"], False)]
+                load_next_question = False
+            else:
+                Q = q_base_hard[question_number - 8]["PYTANIE"]
+                ABCD = [(q_base_hard[question_number - 8]["A"], True), (q_base_hard[question_number - 8]["B"], False),
+                        (q_base_hard[question_number - 8]["C"], False), (q_base_hard[question_number - 8]["D"], False)]
+                load_next_question = False
 
+        draw_question(window, Q, qafont)
+        draw_options(window, ABCD, qafont, mouse_pointer, option_hover, hidden_answers)
+        draw_lifebuoys(window, lifebuoy_50, lifebuoy_time, lifebuoy_friend, used_lifebuoy_50, used_lifebuoy_time, used_lifebuoy_friend)
 
+        pygame.display.update()
 
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                running = False
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if 206 < mouse_pointer[0] < 610 and 548 < mouse_pointer[1] < 598 and 0 not in hidden_answers:
+                        question_number += 1
+                        start_time = pygame.time.get_ticks()
+                        full_time = 30
+                        if not ABCD[0][1]:
+                            sys.exit()
+                        else:
+                            load_next_question = True
+                    if 675 < mouse_pointer[0] < 1076 and 548 < mouse_pointer[1] < 598 and 1 not in hidden_answers:
+                        question_number += 1
+                        start_time = pygame.time.get_ticks()
+                        full_time = 30
+                        if not ABCD[1][1]:
+                            sys.exit()
+                        else:
+                            load_next_question = True
+                    if 206 < mouse_pointer[0] < 610 and 620 < mouse_pointer[1] < 665 and 2 not in hidden_answers:
+                        question_number += 1
+                        start_time = pygame.time.get_ticks()
+                        full_time = 30
+                        if not ABCD[2][1]:
+                            sys.exit()
+                        else:
+                            load_next_question = True
+                    if 675 < mouse_pointer[0] < 1076 and 620 < mouse_pointer[1] < 665 and 3 not in hidden_answers:
+                        question_number += 1
+                        start_time = pygame.time.get_ticks()
+                        full_time = 30
+                        if not ABCD[3][1]:
+                            sys.exit()
+                        else:
+                            load_next_question = True
+
+                    if 520 < mouse_pointer[0] < 590 and 310 < mouse_pointer[1] < 380 and not used_lifebuoy_50:
+                        used_lifebuoy_50 = True
+                        hidden_answers = use_50_50(ABCD)
+                    if 600 < mouse_pointer[0] < 670 and 310 < mouse_pointer[1] < 380 and not used_lifebuoy_time:
+                        used_lifebuoy_time = True
+                        full_time += 30
+                    if 680 < mouse_pointer[0] < 750 and 310 < mouse_pointer[1] < 380 and not used_lifebuoy_friend:
+                        used_lifebuoy_friend = True
+                        show_friends()
+
+                    if 1215 < mouse_pointer[0] < 1280 and 0 < mouse_pointer[1] < 62:
+                        sys.exit()
