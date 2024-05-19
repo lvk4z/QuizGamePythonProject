@@ -9,5 +9,4 @@ flags = FULLSCREEN | DOUBLEBUF | HWSURFACE
 window = pygame.display.set_mode((width,height), flags, 16)
 clock = pygame.time.Clock()
 
-# call
-game(window, width, height, clock)
+mode1_play(window, width)
