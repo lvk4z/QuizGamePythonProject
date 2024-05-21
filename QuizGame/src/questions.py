@@ -23,7 +23,8 @@ def load_question(questions, number):
         difficulty = 'medium'
     else:
         difficulty = 'hard'
-    questions[difficulty].extend(fetch_questions(difficulty, categories[random.randint(0, 3)]))
+    n = number % 4
+    questions[difficulty].extend(fetch_questions(difficulty, categories[n]))
     
     return questions
 
