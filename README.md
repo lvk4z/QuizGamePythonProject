@@ -14,17 +14,17 @@ Etap 1 : zrobione na czas
 
 Etap 2 : zarobione na czas
 
-Etap 3: 
-Szata graficzna
-pytania w json 
-losowanie pytań
+Etap 3: Cel:
+Szata graficzna,
+pytania w json, 
+losowanie pytań,
 timer
 
 - zrobione z opóźnieniem o jedne zajęcia
 
-Etap 4:
-decyzja kierunku projektu
-szata graficzna - pod kierunek projektu
-podpięcie API do pytań
+Etap 4: Cel:
+decyzja kierunku projektu,
+szata graficzna - pod kierunek projektu,
+podpięcie API do pytań,
 
 - zrobione z opóźnieniem o jedne zajęcia
