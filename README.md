@@ -8,7 +8,23 @@
 | Łukasz | Zrozumienie wymagań,projekt koncepcyjny, podział zadań  |  Opracowanie interfejsu użytkownika | Dodanie obsługi różnych kategorii, rozwinięcie funkcjonalności, dodanie innych trybów | dodanie rankingu, testowanie, naprawa błędów|
 | Jakub |  Zrozumienie wymagań,projekt koncepcyjny, podział zadań | Implementacja podstawowej struktur pytań | Implementacja mechanizmu losowania pytań, stworzenie bazy danych, połączenie gry z bazą danych | Dokumentacja | 
 
-# decyzja kierunku projektu
-# szata graficzna pod to
-# rozbudowa mechaniki pod mmilionerów 3 koła ratunkowe 75 5 
-# popraw szaty gridcznek
+Terminowość:
+
+Etap 1 : zrobione na czas
+
+Etap 2 : zarobione na czas
+
+Etap 3: 
+Szata graficzna
+pytania w json 
+losowanie pytań
+timer
+
+- zrobione z opóźnieniem o jedne zajęcia
+
+Etap 4:
+decyzja kierunku projektu
+szata graficzna - pod kierunek projektu
+podpięcie API do pytań
+
+- zrobione z opóźnieniem o jedne zajęcia
