@@ -60,7 +60,7 @@ def endgame(pygame, window, width, question_number, ABCD):
 def mode1_play(window, width):
     bg_img = pygame.image.load('QuizGame/src/resources/game/bg.jpg').convert_alpha()
     option_hover = pygame.image.load('QuizGame/src/resources/game/answer_hover.png').convert_alpha()
-    score_table = [pygame.image.load('QuizGame/src/resources/game/score_table1.jpg').convert_alpha(),
+    score_table = [pygame.image.load('QuizGame/src/resources/game/score_table1b.jpg').convert_alpha(),
                     pygame.image.load('QuizGame/src/resources/game/score_table2.jpg').convert_alpha(),
                     pygame.image.load('QuizGame/src/resources/game/score_table3.jpg').convert_alpha(),
                     pygame.image.load('QuizGame/src/resources/game/score_table4.jpg').convert_alpha(),
