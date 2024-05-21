@@ -25,4 +25,4 @@ while True:
                         mode1_play(window, width)
                     if 540 < mouse_pointer[0] < 740 and 387 < mouse_pointer[1] < 450:
                         mode2_play(window, width)
-                        pass
+                
