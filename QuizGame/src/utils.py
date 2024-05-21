@@ -1,5 +1,13 @@
-# drawing_utils.py
 import pygame
+import time
+
+
+def highlight_correct_answer(window, ABCD, correct_answer_index, font, frame):
+    colors = [(184, 196, 71), (255, 255, 255)] 
+    current_color_index = int(time.time() * 2) % 2 
+    color = colors[current_color_index]
+    draw_text(window, ABCD[correct_answer_index][0], color, frame, font, True)
+
 def draw_background(window, bg_img):
     window.blit(bg_img, (0, 0))
 
@@ -38,12 +46,12 @@ def draw_options(window, ABCD, qafont, mouse_pointer, option_hover, hidden_answe
             else:
                 draw_text(window, ABCD[i][0], "white", frame, qafont, True)
 
-def draw_lifebuoys(window, lifebuoy_50, lifebuoy_time, lifebuoy_friend, used_lifebuoy_50, used_lifebuoy_time, used_lifebuoy_friend):
+def draw_lifebuoys(window, lifebuoy_50, lifebuoy_time, lifebuoy_friend, used_lifebuoy_50, used_lifebuoy_time, used_lifebuoy_friend, x):
     if not used_lifebuoy_50:
         window.blit(lifebuoy_50, (520, 310))
     if not used_lifebuoy_time:
         window.blit(lifebuoy_time, (600, 310))
-    if not used_lifebuoy_friend:
+    if x < 0:
         window.blit(lifebuoy_friend, (680, 310))
 
 def draw_score_table(window, score_table, question_number):

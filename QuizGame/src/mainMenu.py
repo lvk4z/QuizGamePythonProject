@@ -1,7 +1,7 @@
 from mode1 import *
 from pygame.locals import *
 import pygame
-from utils import show_friends, draw_background
+from utils import draw_background
 
 pygame.init()
 pygame.event.set_allowed([QUIT, MOUSEBUTTONDOWN])
