@@ -1,14 +1,14 @@
+"""Tryb trudny - bez kół ratunkowych, same trudne pytania"""
 import sys
 import pygame
 from pygame.locals import *
 from utils import draw_background, draw_lifebuoys, draw_options, draw_question, draw_score_table,draw_timer, highlight_correct_answer
 from questions import load_question, parse_question
-from lifebuoys import use_friends
-import random
+
 
 
 def endgame(pygame, window, width, question_number, ABCD):
-
+    """Ekran końca gry"""
     finish_bg = pygame.image.load('QuizGame/src/resources/game/finish_bg.jpg').convert_alpha()
     font = pygame.font.SysFont('arial', 30)
 
@@ -58,6 +58,7 @@ def endgame(pygame, window, width, question_number, ABCD):
                             sys.exit()
 
 def mode2_play(window, width):
+    """Mechanika gry trybu trudnego"""
     bg_img = pygame.image.load('QuizGame/src/resources/game/bg.jpg').convert_alpha()
     option_hover = pygame.image.load('QuizGame/src/resources/game/answer_hover.png').convert_alpha()
     score_table = [pygame.image.load('QuizGame/src/resources/game/score_table1b.jpg').convert_alpha(),
@@ -84,14 +85,11 @@ def mode2_play(window, width):
     question_number = 0
     running = True
     load_next_question = True
-    used_lifebuoy_50 = False
-    used_lifebuoy_friend = False
-    used_lifebuoy_time = False
     start_time = pygame.time.get_ticks()
     hidden_answers = []
     questions = {'easy': [], 'medium': [], 'hard': []}
-    questions = load_question(questions, question_number)
-    suggested = -1
+    questions = load_question(questions, 10)
+
 
     while running:
         mouse_pointer = pygame.mouse.get_pos()
@@ -109,6 +107,7 @@ def mode2_play(window, width):
 
         if load_next_question:
             Q, ABCD, category = parse_question(questions['hard'][question_number])
+            load_question = False
             
 
         draw_question(window, Q, qafont)
@@ -128,7 +127,7 @@ def mode2_play(window, width):
                         if not ABCD[0][1]:
                             endgame(pygame, window, width, question_number,ABCD)
                         else:
-                            questions = load_question(questions, question_number)
+                            questions = load_question(questions, 10)
                             start_time = pygame.time.get_ticks()
                             full_time = 20
                             load_next_question = True
@@ -137,7 +136,7 @@ def mode2_play(window, width):
                         if not ABCD[1][1]:
                             endgame(pygame, window, width, question_number,ABCD)
                         else:
-                            questions = load_question(questions, question_number)
+                            questions = load_question(questions, 10)
                             start_time = pygame.time.get_ticks()
                             full_time = 20
                             load_next_question = True
@@ -146,7 +145,7 @@ def mode2_play(window, width):
                         if not ABCD[2][1]:
                             endgame(pygame, window, width, question_number,ABCD)
                         else:
-                            questions = load_question(questions, question_number)
+                            questions = load_question(questions, 10)
                             start_time = pygame.time.get_ticks()
                             full_time = 20
                             load_next_question = True
@@ -156,7 +155,7 @@ def mode2_play(window, width):
                             
                             endgame(pygame, window, width, question_number,ABCD)
                         else:
-                            questions = load_question(questions, question_number)
+                            questions = load_question(questions, 10)
                             start_time = pygame.time.get_ticks()
                             full_time = 20
                             load_next_question = True

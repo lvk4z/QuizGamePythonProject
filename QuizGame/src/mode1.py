@@ -8,7 +8,7 @@ import random
 
 
 def endgame(pygame, window, width, question_number, ABCD):
-
+    """Ekran końca gry"""
     finish_bg = pygame.image.load('QuizGame/src/resources/game/finish_bg.jpg').convert_alpha()
     font = pygame.font.SysFont('arial', 30)
 
@@ -53,11 +53,12 @@ def endgame(pygame, window, width, question_number, ABCD):
                         if 540 < mouse_pointer[0] < 740 and 365 < mouse_pointer[1] < 420:
                             run = False
                             mode1_play(window, width)
-                        if 540 < mouse_pointer[0] < 740 and 476 < mouse_pointer[1] < 503:
+                        if 540 < mouse_pointer[0] < 740 and 476 < mouse_pointer[1] < 535:
                             pygame.quit()
                             sys.exit()
 
 def mode1_play(window, width):
+    """Mechanika gry trybu normalnego"""
     bg_img = pygame.image.load('QuizGame/src/resources/game/bg.jpg').convert_alpha()
     option_hover = pygame.image.load('QuizGame/src/resources/game/answer_hover.png').convert_alpha()
     score_table = [pygame.image.load('QuizGame/src/resources/game/score_table1b.jpg').convert_alpha(),
@@ -77,8 +78,6 @@ def mode1_play(window, width):
     lifebuoy_friend =  pygame.image.load('QuizGame/src/resources/game/lifebuoy_friend.png').convert_alpha()
     lifebuoy_time =  pygame.image.load('QuizGame/src/resources/game/lifebuoy_time.png').convert_alpha()
 
-    
-
     timerfont = pygame.font.SysFont('arial', 130)
     qafont = pygame.font.SysFont('arial', 22)
     full_time = 30
@@ -93,7 +92,7 @@ def mode1_play(window, width):
     hidden_answers = []
     questions = {'easy': [], 'medium': [], 'hard': []}
     questions = load_question(questions, question_number)
-    suggested = -1
+    suggested_by_friend = -1
     def use_50_50(options):
         incorrect_answers = [i for i, ans in enumerate(options) if not ans[1]]
         return random.sample(incorrect_answers, 2)
@@ -126,10 +125,10 @@ def mode1_play(window, width):
 
         draw_question(window, Q, qafont)
         draw_options(window, ABCD, qafont, mouse_pointer, option_hover, hidden_answers)
-        draw_lifebuoys(window, lifebuoy_50, lifebuoy_time, lifebuoy_friend, used_lifebuoy_50, used_lifebuoy_time, used_lifebuoy_friend,suggested)
+        draw_lifebuoys(window, lifebuoy_50, lifebuoy_time, lifebuoy_friend, used_lifebuoy_50, used_lifebuoy_time,suggested_by_friend)
 
         
-        if time_left <= 20 or used_lifebuoy_friend:
+        if time_left <= 25 or used_lifebuoy_friend:
             option_frames = [
                     pygame.Rect(210, 560, 370, 30),
                     pygame.Rect(690, 560, 370, 30),
@@ -139,7 +138,7 @@ def mode1_play(window, width):
             if not used_lifebuoy_friend:
                 correct_answer_index = next(i for i, ans in enumerate(ABCD) if ans[1])
             else:
-               correct_answer_index = suggested 
+               correct_answer_index = suggested_by_friend 
                
             highlight_correct_answer(window, ABCD, correct_answer_index, qafont, option_frames[correct_answer_index])
 
@@ -201,9 +200,9 @@ def mode1_play(window, width):
                     if 600 < mouse_pointer[0] < 670 and 310 < mouse_pointer[1] < 380 and not used_lifebuoy_time:
                         used_lifebuoy_time = True
                         full_time += 30
-                    if 680 < mouse_pointer[0] < 750 and 310 < mouse_pointer[1] < 380 and suggested<0:
+                    if 680 < mouse_pointer[0] < 750 and 310 < mouse_pointer[1] < 380 and suggested_by_friend<0:
                         full_time += 5
-                        suggested = use_friends(window,category,ABCD)
+                        suggested_by_friend = use_friends(window,category,ABCD)
                         used_lifebuoy_friend = True
                         
 

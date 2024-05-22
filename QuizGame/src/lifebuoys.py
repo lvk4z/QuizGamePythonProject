@@ -3,10 +3,12 @@ import random
 
 
 def use_50_50(abcd):
+        """Funkcja - użycie koła ratunkowego 50/50"""
         incorrect_answers = [i for i, ans in enumerate(abcd) if not ans[1]]
         return random.sample(incorrect_answers, 2)
 
 def use_friends(window, category, ABCD):
+    """Funkcja - użycie koła ratunkowego Przyjaciele"""
     friends = pygame.image.load('QuizGame/src/resources/game/friends.jpg').convert_alpha()
     running = True
     chosen_friend = None

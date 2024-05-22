@@ -3,6 +3,7 @@ import requests
 import urllib.parse
 
 def fetch_questions(difficulty, category):
+    """Funkcja pobierająca pytanie z API"""
     url = f'https://opentdb.com/api.php?amount=1&category={category}&difficulty={difficulty}&type=multiple&encode=url3986'
     response = requests.get(url)
     if response.status_code == 200:
@@ -13,9 +14,10 @@ def fetch_questions(difficulty, category):
             question['incorrect_answers'] = [urllib.parse.unquote(ans) for ans in question['incorrect_answers']]
         return results
     else:
-        return 
+        return fetch_questions(difficulty,category)
 
 def load_question(questions, number):
+    """Funkcja dopasowująca poziom trudności pytania i jego kategorię"""
     categories = [9, 22, 23, 27]
     if number < 3:
         difficulty = 'easy'
@@ -23,13 +25,14 @@ def load_question(questions, number):
         difficulty = 'medium'
     else:
         difficulty = 'hard'
-    n = number % 4
+    n = random.randint(0,3)
     questions[difficulty].extend(fetch_questions(difficulty, categories[n]))
     
     return questions
 
 
 def parse_question(question):
+    """Funkcja parsująca pytanie z API, zwraca zestaw pomieszanych odpowiedzi ABCD"""
     q_text = question['question']
     correct_answer = question['correct_answer']
     category = question['category']

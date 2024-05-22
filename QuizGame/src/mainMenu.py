@@ -8,7 +8,7 @@ pygame.init()
 pygame.event.set_allowed([QUIT, MOUSEBUTTONDOWN])
 width = 1280
 height = 720
-flags = FULLSCREEN | DOUBLEBUF | HWSURFACE
+flags = DOUBLEBUF | HWSURFACE
 window = pygame.display.set_mode((width,height), flags, 16)
 clock = pygame.time.Clock()
 bg_img = pygame.image.load('QuizGame/src/resources/menu_bg.jpg').convert_alpha()
@@ -20,6 +20,7 @@ while True:
     for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
+                sys.exit()
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if 540 < mouse_pointer[0] < 740 and 276 < mouse_pointer[1] < 334:
