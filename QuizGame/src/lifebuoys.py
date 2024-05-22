@@ -45,5 +45,5 @@ def use_friends(window, category, ABCD):
         
         return correct_answer_index
     return None
-
+#
 

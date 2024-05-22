@@ -40,3 +40,4 @@ def parse_question(question):
     options = [(correct_answer, True)] + [(ans, False) for ans in incorrect_answers]
     random.shuffle(options)
     return q_text, options, category
+#

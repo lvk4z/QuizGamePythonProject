@@ -208,3 +208,4 @@ def mode1_play(window, width):
 
                     if 1215 < mouse_pointer[0] < 1280 and 0 < mouse_pointer[1] < 62:
                         sys.exit()
+#
