@@ -9,6 +9,7 @@ import random
 global path_
 path_ = 'C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources'
 
+
 def load_image_by_name(name_):
     global path_
     return pygame.image.load(path_ + name_).convert_alpha()
