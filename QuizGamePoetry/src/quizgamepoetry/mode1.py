@@ -6,10 +6,17 @@ from questions import load_question, parse_question
 from lifebuoys import use_friends
 import random
 
+global path_
+path_ = 'C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources'
+
+def load_image_by_name(name_):
+    global path_
+    return pygame.image.load(path_ + name_).convert_alpha()
 
 def endgame(pygame, window, width, question_number, ABCD):
+    global path_
     """Ekran końca gry"""
-    finish_bg = pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/finish_bg.jpg').convert_alpha()
+    finish_bg = load_image_by_name('/game/finish_bg.jpg')
     font = pygame.font.SysFont('arial', 30)
 
     for i in range(0, 4):
@@ -17,10 +24,9 @@ def endgame(pygame, window, width, question_number, ABCD):
                 correct  = ABCD[i][0]
                 
 
-    if ( 2 <= question_number <= 7):
+    if ( 2 <= question_number <= 12):
         string = "Niestety to koniec gry. Udało ci się wygrać 1000 zł  !!! Poprawną odpowiedzią było: " + correct
-    elif (8 <= question_number <= 12):
-        string = "Niestety to koniec gry. Udało ci się wygrać 1000 zł  !!! Poprawną odpowiedzią było: " + correct
+
     elif (question_number >= 13):
         string = "Gratulacje mistrzu, wygrywasz 1 000 000 zł!!!! "
     else:
@@ -59,24 +65,14 @@ def endgame(pygame, window, width, question_number, ABCD):
 
 def mode1_play(window, width):
     """Mechanika gry trybu normalnego"""
-    bg_img = pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/bg.jpg').convert_alpha()
-    option_hover = pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/answer_hover.png').convert_alpha()
-    score_table = [pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/score_table1b.jpg').convert_alpha(),
-                    pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/score_table2.jpg').convert_alpha(),
-                    pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/score_table3.jpg').convert_alpha(),
-                    pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/score_table4.jpg').convert_alpha(),
-                    pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/score_table5.jpg').convert_alpha(),
-                    pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/score_table6.jpg').convert_alpha(),
-                    pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/score_table7.jpg').convert_alpha(),
-                    pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/score_table8.jpg').convert_alpha(),
-                    pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/score_table9.jpg').convert_alpha(),
-                    pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/score_table10.jpg').convert_alpha(),
-                    pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/score_table11.jpg').convert_alpha(),
-                    pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/score_table12.jpg').convert_alpha()]
-    
-    lifebuoy_50 =  pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/lifebuoy_50.png').convert_alpha()
-    lifebuoy_friend =  pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/lifebuoy_friend.png').convert_alpha()
-    lifebuoy_time =  pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/lifebuoy_time.png').convert_alpha()
+    bg_img = load_image_by_name('/game/bg.jpg')
+    option_hover = load_image_by_name('/game/answer_hover.png')
+    score_table = [load_image_by_name('/game/score_table1b.jpg')]
+    for i in range(2, 13, 1):
+        score_table.append(load_image_by_name('/game/score_table' + str(i) + '.jpg'))
+    lifebuoy_50 = load_image_by_name('/game/lifebuoy_50.png')
+    lifebuoy_friend = load_image_by_name('/game/lifebuoy_friend.png')
+    lifebuoy_time = load_image_by_name('/game/lifebuoy_time.png')
 
     timerfont = pygame.font.SysFont('arial', 130)
     qafont = pygame.font.SysFont('arial', 22)
