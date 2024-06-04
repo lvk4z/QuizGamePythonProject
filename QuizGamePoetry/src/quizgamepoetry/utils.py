@@ -42,11 +42,11 @@ def draw_options(window, ABCD, qafont, mouse_pointer, option_hover, hidden_answe
 
     for i, frame in enumerate(option_frames):
         if i not in hidden_answers:
-            if hover_conditions[i] and i in [0,2]:
-                window.blit(option_hover, (frame.x - 2, frame.y - 12))
-                draw_text(window, ABCD[i][0], "black", frame, qafont, True)
-            elif hover_conditions[i] and i in [1,3]:
-                window.blit(option_hover, (frame.x - 16, frame.y - 12))
+            if(hover_conditions[i]):
+                if(i % 2):
+                    window.blit(option_hover, (frame.x - 16, frame.y - 12))
+                else:
+                    window.blit(option_hover, (frame.x - 2, frame.y - 12))
                 draw_text(window, ABCD[i][0], "black", frame, qafont, True)
             else:
                 draw_text(window, ABCD[i][0], "white", frame, qafont, True)

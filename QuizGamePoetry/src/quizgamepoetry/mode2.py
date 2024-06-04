@@ -22,9 +22,7 @@ def endgame(pygame, window, width, question_number, ABCD):
                 correct  = ABCD[i][0]
                 
 
-    if ( 2 <= question_number <= 7):
-        string = "Niestety to koniec gry. Udało ci się wygrać 1000 zł  !!! Poprawną odpowiedzią było: " + correct
-    elif (8 <= question_number <= 12):
+    if ( 2 <= question_number <= 12):
         string = "Niestety to koniec gry. Udało ci się wygrać 1000 zł  !!! Poprawną odpowiedzią było: " + correct
     elif (question_number >= 13):
         string = "Gratulacje mistrzu, wygrywasz 1 000 000 zł!!!! "

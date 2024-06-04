@@ -57,12 +57,13 @@ def endgame(pygame, window, width, question_number, ABCD):
                     run = False
                 if event.type == MOUSEBUTTONDOWN:
                     if event.button == 1:
-                        if 540 < mouse_pointer[0] < 740 and 365 < mouse_pointer[1] < 420:
-                            run = False
-                            mode1_play(window, width)
-                        if 540 < mouse_pointer[0] < 740 and 476 < mouse_pointer[1] < 535:
-                            pygame.quit()
-                            sys.exit()
+                        if 540 < mouse_pointer[0] < 740:
+                            if 365 < mouse_pointer[1] < 420:
+                                run = False
+                                mode1_play(window, width)
+                            elif 476 < mouse_pointer[1] < 535:
+                                pygame.quit()
+                                sys.exit()
 
 def mode1_play(window, width):
     """Mechanika gry trybu normalnego"""
@@ -112,17 +113,15 @@ def mode1_play(window, width):
             hidden_answers = []
             if question_number < 3:
                 Q, ABCD, category = parse_question(questions['easy'][question_number])
-                load_next_question = False
             elif question_number < 8:
                 Q, ABCD, category = parse_question(questions['medium'][question_number-3])
-                load_next_question = False
             else:
                 Q, ABCD, category = parse_question(questions['hard'][question_number-8])
-                load_next_question = False
+            load_next_question = False
 
         draw_question(window, Q, qafont)
         draw_options(window, ABCD, qafont, mouse_pointer, option_hover, hidden_answers)
-        draw_lifebuoys(window, lifebuoy_50, lifebuoy_time, lifebuoy_friend, used_lifebuoy_50, used_lifebuoy_time,suggested_by_friend)
+        draw_lifebuoys(window, lifebuoy_50, lifebuoy_time, lifebuoy_friend, used_lifebuoy_50, used_lifebuoy_time, suggested_by_friend)
 
         
         if time_left <= 25 or used_lifebuoy_friend:
