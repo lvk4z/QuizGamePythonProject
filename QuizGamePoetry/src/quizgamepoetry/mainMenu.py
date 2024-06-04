@@ -23,8 +23,9 @@ while True:
                 sys.exit()
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    if 540 < mouse_pointer[0] < 740 and 276 < mouse_pointer[1] < 334:
-                        mode1_play(window, width)
-                    if 540 < mouse_pointer[0] < 740 and 387 < mouse_pointer[1] < 450:
-                        mode2_play(window, width)
+                    if 540 < mouse_pointer[0] < 740:
+                        if 276 < mouse_pointer[1] < 334:
+                            mode1_play(window, width)
+                        elif 387 < mouse_pointer[1] < 450:
+                            mode2_play(window, width)
 

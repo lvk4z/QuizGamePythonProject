@@ -1,22 +1,16 @@
 import sys
 import pygame
 from pygame.locals import *
-from utils import draw_background, draw_lifebuoys, draw_options, draw_question, draw_score_table,draw_timer, highlight_correct_answer
+from utils import draw_background, draw_lifebuoys, draw_options, draw_question, draw_score_table,draw_timer, highlight_correct_answer, hover_cond
 from questions import load_question, parse_question
 from lifebuoys import use_friends
 import random
 
-global path_
-path_ = 'C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources'
-
-
 def load_image_by_name(name_):
-    global path_
+    path_ = 'C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources'
     return pygame.image.load(path_ + name_).convert_alpha()
 
 def endgame(pygame, window, width, question_number, ABCD):
-    global path_
-    """Ekran końca gry"""
     finish_bg = load_image_by_name('/game/finish_bg.jpg')
     font = pygame.font.SysFont('arial', 30)
 
@@ -66,7 +60,6 @@ def endgame(pygame, window, width, question_number, ABCD):
                                 sys.exit()
 
 def mode1_play(window, width):
-    """Mechanika gry trybu normalnego"""
     bg_img = load_image_by_name('/game/bg.jpg')
     option_hover = load_image_by_name('/game/answer_hover.png')
     score_table = [load_image_by_name('/game/score_table1b.jpg')]
@@ -79,7 +72,6 @@ def mode1_play(window, width):
     timerfont = pygame.font.SysFont('arial', 130)
     qafont = pygame.font.SysFont('arial', 22)
     full_time = 30
-    time_left = 30
     question_number = 0
     running = True
     load_next_question = True
@@ -146,61 +138,28 @@ def mode1_play(window, width):
                 running = False
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    if 206 < mouse_pointer[0] < 610 and 548 < mouse_pointer[1] < 598 and 0 not in hidden_answers:
-                        used_lifebuoy_friend = False
-                        question_number += 1
-                        if not ABCD[0][1]:
-                            endgame(pygame, window, width, question_number,ABCD)
-                        else:
-                            questions = load_question(questions, question_number)
-                            start_time = pygame.time.get_ticks()
-                            full_time = 30
-                            load_next_question = True
-                    if 675 < mouse_pointer[0] < 1076 and 548 < mouse_pointer[1] < 598 and 1 not in hidden_answers:
-                        used_lifebuoy_friend = False
-                        question_number += 1
-                        if not ABCD[1][1]:
-                            endgame(pygame, window, width, question_number,ABCD)
-                        else:
-                            questions = load_question(questions, question_number)
-                            start_time = pygame.time.get_ticks()
-                            full_time = 30
-                            load_next_question = True
-                    if 206 < mouse_pointer[0] < 610 and 620 < mouse_pointer[1] < 665 and 2 not in hidden_answers:
-                        used_lifebuoy_friend = False
-                        question_number += 1
-                        
-                        if not ABCD[2][1]:
-                            endgame(pygame, window, width, question_number,ABCD)
-                        else:
-                            questions = load_question(questions, question_number)
-                            start_time = pygame.time.get_ticks()
-                            full_time = 30
-                            load_next_question = True
-                    if 675 < mouse_pointer[0] < 1076 and 620 < mouse_pointer[1] < 665 and 3 not in hidden_answers:
-                        used_lifebuoy_friend = False
-                        question_number += 1
-                        
-                        if not ABCD[3][1]:
-                            
-                            endgame(pygame, window, width, question_number,ABCD)
-                        else:
-                            questions = load_question(questions, question_number)
-                            start_time = pygame.time.get_ticks()
-                            full_time = 30
-                            load_next_question = True
+                    for j in range(4):
+                        if hover_cond(j, mouse_pointer) and j not in hidden_answers:
+                            used_lifebuoy_friend = False
+                            question_number += 1
+                            if not ABCD[j][1]:
+                                endgame(pygame, window, width, question_number,ABCD)
+                            else:
+                                questions = load_question(questions, question_number)
+                                start_time = pygame.time.get_ticks()
+                                full_time = 30
+                                load_next_question = True
+                                break
 
                     if 520 < mouse_pointer[0] < 590 and 310 < mouse_pointer[1] < 380 and not used_lifebuoy_50:
                         used_lifebuoy_50 = True
                         hidden_answers = use_50_50(ABCD)
-                    if 600 < mouse_pointer[0] < 670 and 310 < mouse_pointer[1] < 380 and not used_lifebuoy_time:
+                    elif 600 < mouse_pointer[0] < 670 and 310 < mouse_pointer[1] < 380 and not used_lifebuoy_time:
                         used_lifebuoy_time = True
                         full_time += 30
-                    if 680 < mouse_pointer[0] < 750 and 310 < mouse_pointer[1] < 380 and suggested_by_friend<0:
+                    elif 680 < mouse_pointer[0] < 750 and 310 < mouse_pointer[1] < 380 and suggested_by_friend<0:
                         full_time += 5
-                        suggested_by_friend = use_friends(window,category,ABCD)
+                        suggested_by_friend = use_friends(window, category,ABCD)
                         used_lifebuoy_friend = True
-                        
-
-                    if 1215 < mouse_pointer[0] < 1280 and 0 < mouse_pointer[1] < 62:
+                    elif 1215 < mouse_pointer[0] < 1280 and 0 < mouse_pointer[1] < 62:
                         sys.exit()

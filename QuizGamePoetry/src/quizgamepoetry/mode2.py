@@ -2,18 +2,15 @@
 import sys
 import pygame
 from pygame.locals import *
-from utils import draw_background, draw_lifebuoys, draw_options, draw_question, draw_score_table,draw_timer, highlight_correct_answer
+from utils import draw_background, draw_options, draw_question, draw_score_table,draw_timer, highlight_correct_answer
 from questions import load_question, parse_question
 
 
-global path_
-path_ = 'C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources'
 
 def load_image_by_name(name_):
-    global path_
+    path_ = 'C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources'
     return pygame.image.load(path_ + name_).convert_alpha()
 def endgame(pygame, window, width, question_number, ABCD):
-    """Ekran końca gry"""
     finish_bg = load_image_by_name('/game/finish_bg.jpg')
     font = pygame.font.SysFont('arial', 30)
 
@@ -61,9 +58,8 @@ def endgame(pygame, window, width, question_number, ABCD):
                             sys.exit()
 
 def mode2_play(window, width):
-    """Mechanika gry trybu trudnego"""
-    bg_img = load_image_by_name('bg.jpg')
-    option_hover = load_image_by_name('/game/anwer_hover.png')
+    bg_img = load_image_by_name('/game/bg.jpg')
+    option_hover = load_image_by_name('/game/answer_hover.png')
     score_table = [load_image_by_name('/game/score_table1b.jpg')]
     for i in range(2, 13, 1):
         score_table.append(load_image_by_name('/game/score_table' + str(i) + '.jpg'))
@@ -71,7 +67,6 @@ def mode2_play(window, width):
     timerfont = pygame.font.SysFont('arial', 130)
     qafont = pygame.font.SysFont('arial', 22)
     full_time = 20
-    time_left = 20
     question_number = 0
     running = True
     load_next_question = True
@@ -97,7 +92,7 @@ def mode2_play(window, width):
 
         if load_next_question:
             Q, ABCD, category = parse_question(questions['hard'][question_number])
-            load_question = False
+            load_next_question = False
             
 
         draw_question(window, Q, qafont)
