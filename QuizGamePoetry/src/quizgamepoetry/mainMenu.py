@@ -11,7 +11,7 @@ height = 720
 flags = DOUBLEBUF | HWSURFACE
 window = pygame.display.set_mode((width,height), flags, 16)
 clock = pygame.time.Clock()
-bg_img = pygame.image.load('QuizGame/src/resources/menu_bg.jpg').convert_alpha()
+bg_img = pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/menu_bg.jpg').convert_alpha()
 running = True
 while True:
     mouse_pointer = pygame.mouse.get_pos()
@@ -23,8 +23,9 @@ while True:
                 sys.exit()
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    if 540 < mouse_pointer[0] < 740 and 276 < mouse_pointer[1] < 334:
-                        mode1_play(window, width)
-                    if 540 < mouse_pointer[0] < 740 and 387 < mouse_pointer[1] < 450:
-                        mode2_play(window, width)
+                    if 540 < mouse_pointer[0] < 740:
+                        if 276 < mouse_pointer[1] < 334:
+                            mode1_play(window, width)
+                        elif 387 < mouse_pointer[1] < 450:
+                            mode2_play(window, width)
 

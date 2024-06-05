@@ -9,7 +9,7 @@ def use_50_50(abcd):
 
 def use_friends(window, category, ABCD):
     """Funkcja - użycie koła ratunkowego Przyjaciele"""
-    friends = pygame.image.load('QuizGame/src/resources/game/friends.jpg').convert_alpha()
+    friends = pygame.image.load('C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/game/friends.jpg').convert_alpha()
     running = True
     chosen_friend = None
     while running:

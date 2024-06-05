@@ -2,24 +2,20 @@
 import sys
 import pygame
 from pygame.locals import *
-from utils import draw_background, draw_lifebuoys, draw_options, draw_question, draw_score_table,draw_timer, highlight_correct_answer
+from utils import draw_background, draw_options, draw_question, draw_score_table,draw_timer, highlight_correct_answer
 from questions import load_question, parse_question
 
 
 
+def load_image_by_name(name_):
+    path_ = 'C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources'
+    return pygame.image.load(path_ + name_).convert_alpha()
 def endgame(pygame, window, width, question_number, ABCD):
-    """Ekran końca gry"""
-    finish_bg = pygame.image.load('QuizGame/src/resources/game/finish_bg.jpg').convert_alpha()
+    finish_bg = load_image_by_name('/game/finish_bg.jpg')
     font = pygame.font.SysFont('arial', 30)
+    correct = [ABCD[i][0] for i in range(4) if ABCD[i][1]][0]
 
-    for i in range(0, 4):
-            if ABCD[i][1]:
-                correct  = ABCD[i][0]
-                
-
-    if ( 2 <= question_number <= 7):
-        string = "Niestety to koniec gry. Udało ci się wygrać 1000 zł  !!! Poprawną odpowiedzią było: " + correct
-    elif (8 <= question_number <= 12):
+    if ( 2 <= question_number <= 12):
         string = "Niestety to koniec gry. Udało ci się wygrać 1000 zł  !!! Poprawną odpowiedzią było: " + correct
     elif (question_number >= 13):
         string = "Gratulacje mistrzu, wygrywasz 1 000 000 zł!!!! "
@@ -58,30 +54,15 @@ def endgame(pygame, window, width, question_number, ABCD):
                             sys.exit()
 
 def mode2_play(window, width):
-    """Mechanika gry trybu trudnego"""
-    bg_img = pygame.image.load('QuizGame/src/resources/game/bg.jpg').convert_alpha()
-    option_hover = pygame.image.load('QuizGame/src/resources/game/answer_hover.png').convert_alpha()
-    score_table = [pygame.image.load('QuizGame/src/resources/game/score_table1b.jpg').convert_alpha(),
-                    pygame.image.load('QuizGame/src/resources/game/score_table2.jpg').convert_alpha(),
-                    pygame.image.load('QuizGame/src/resources/game/score_table3.jpg').convert_alpha(),
-                    pygame.image.load('QuizGame/src/resources/game/score_table4.jpg').convert_alpha(),
-                    pygame.image.load('QuizGame/src/resources/game/score_table5.jpg').convert_alpha(),
-                    pygame.image.load('QuizGame/src/resources/game/score_table6.jpg').convert_alpha(),
-                    pygame.image.load('QuizGame/src/resources/game/score_table7.jpg').convert_alpha(),
-                    pygame.image.load('QuizGame/src/resources/game/score_table8.jpg').convert_alpha(),
-                    pygame.image.load('QuizGame/src/resources/game/score_table9.jpg').convert_alpha(),
-                    pygame.image.load('QuizGame/src/resources/game/score_table10.jpg').convert_alpha(),
-                    pygame.image.load('QuizGame/src/resources/game/score_table11.jpg').convert_alpha(),
-                    pygame.image.load('QuizGame/src/resources/game/score_table12.jpg').convert_alpha()]
-    
-
-
-    
+    bg_img = load_image_by_name('/game/bg.jpg')
+    option_hover = load_image_by_name('/game/answer_hover.png')
+    score_table = [load_image_by_name('/game/score_table1b.jpg')]
+    for i in range(2, 13, 1):
+        score_table.append(load_image_by_name('/game/score_table' + str(i) + '.jpg'))
 
     timerfont = pygame.font.SysFont('arial', 130)
     qafont = pygame.font.SysFont('arial', 22)
     full_time = 20
-    time_left = 20
     question_number = 0
     running = True
     load_next_question = True
@@ -89,7 +70,6 @@ def mode2_play(window, width):
     hidden_answers = []
     questions = {'easy': [], 'medium': [], 'hard': []}
     questions = load_question(questions, 10)
-
 
     while running:
         mouse_pointer = pygame.mouse.get_pos()
@@ -107,7 +87,7 @@ def mode2_play(window, width):
 
         if load_next_question:
             Q, ABCD, category = parse_question(questions['hard'][question_number])
-            load_question = False
+            load_next_question = False
             
 
         draw_question(window, Q, qafont)
