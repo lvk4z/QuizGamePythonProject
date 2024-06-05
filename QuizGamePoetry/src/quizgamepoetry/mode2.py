@@ -2,56 +2,11 @@
 import sys
 import pygame
 from pygame.locals import *
-from utils import draw_background, draw_options, draw_question, draw_score_table,draw_timer, highlight_correct_answer
+from utils import draw_background, draw_options, draw_question, draw_score_table,draw_timer, hover_cond, highlight_correct_answer
 from questions import load_question, parse_question
 
+from mode1 import load_image_by_name, endgame
 
-
-def load_image_by_name(name_):
-    path_ = 'C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources'
-    return pygame.image.load(path_ + name_).convert_alpha()
-def endgame(pygame, window, width, question_number, ABCD):
-    finish_bg = load_image_by_name('/game/finish_bg.jpg')
-    font = pygame.font.SysFont('arial', 30)
-    correct = [ABCD[i][0] for i in range(4) if ABCD[i][1]][0]
-
-    if ( 2 <= question_number <= 12):
-        string = "Niestety to koniec gry. Udało ci się wygrać 1000 zł  !!! Poprawną odpowiedzią było: " + correct
-    elif (question_number >= 13):
-        string = "Gratulacje mistrzu, wygrywasz 1 000 000 zł!!!! "
-    else:
-        string = "Niestety to koniec gry. Nic nie wygrałeś :( Poprawną odpowiedzią było:" + correct
-
-    text = font.render(string, True, (184, 193, 209))
-    text_rect = text.get_rect (center = (width // 2 , 280))
-
-    run = True
-    while run:
-        mouse_pointer = pygame.mouse.get_pos()
-
-        window.blit(finish_bg, (0, 0))
-        window.blit(text, text_rect)
-        if mouse_pointer[0] > 534 and mouse_pointer[0] < 745 and mouse_pointer[1] > 481 and mouse_pointer[1] < 512:
-            pass
-        else: 
-            pass
-        if mouse_pointer[0] > 534 and mouse_pointer[0] < 745 and mouse_pointer[1] > 520 and mouse_pointer[1] < 551:
-            pass
-        else: 
-            pass
-        pygame.display.update()
-
-        for event in pygame.event.get():
-                if event.type == QUIT:
-                    run = False
-                if event.type == MOUSEBUTTONDOWN:
-                    if event.button == 1:
-                        if 540 < mouse_pointer[0] < 740 and 365 < mouse_pointer[1] < 420:
-                            run = False
-                            mode2_play(window, width)
-                        if 540 < mouse_pointer[0] < 740 and 476 < mouse_pointer[1] < 503:
-                            pygame.quit()
-                            sys.exit()
 
 def mode2_play(window, width):
     bg_img = load_image_by_name('/game/bg.jpg')
@@ -70,6 +25,7 @@ def mode2_play(window, width):
     hidden_answers = []
     questions = {'easy': [], 'medium': [], 'hard': []}
     questions = load_question(questions, 10)
+    print(questions)
 
     while running:
         mouse_pointer = pygame.mouse.get_pos()
@@ -80,65 +36,43 @@ def mode2_play(window, width):
         else:
             endgame(pygame, window, width, question_number,ABCD)
 
-  
         draw_background(window, bg_img)
         draw_timer(window, timerfont, time_left, width)
         draw_score_table(window, score_table, question_number)
 
         if load_next_question:
+            print(question_number)
             Q, ABCD, category = parse_question(questions['hard'][question_number])
             load_next_question = False
-            
 
         draw_question(window, Q, qafont)
         draw_options(window, ABCD, qafont, mouse_pointer, option_hover, hidden_answers)
-
-      
         pygame.display.update()
-
+        if(time_left <= 15):
+            dy, dx = 30, 370
+            option_frames = [
+                pygame.Rect(210, 560, dx, dy),
+                pygame.Rect(690, 560, dx, dy),
+                pygame.Rect(210, 630, dx, dy),
+                pygame.Rect(690, 630, dx, dy)]
+            correct_answer_index = next(i for i, ans in enumerate(ABCD) if ans[1])
+            highlight_correct_answer(window, ABCD, correct_answer_index, qafont, option_frames[correct_answer_index])
 
         for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    if 206 < mouse_pointer[0] < 610 and 548 < mouse_pointer[1] < 598:
-                        question_number += 1
-                        if not ABCD[0][1]:
-                            endgame(pygame, window, width, question_number,ABCD)
-                        else:
-                            questions = load_question(questions, 10)
-                            start_time = pygame.time.get_ticks()
-                            full_time = 20
-                            load_next_question = True
-                    if 675 < mouse_pointer[0] < 1076 and 548 < mouse_pointer[1] < 598:
-                        question_number += 1
-                        if not ABCD[1][1]:
-                            endgame(pygame, window, width, question_number,ABCD)
-                        else:
-                            questions = load_question(questions, 10)
-                            start_time = pygame.time.get_ticks()
-                            full_time = 20
-                            load_next_question = True
-                    if 206 < mouse_pointer[0] < 610 and 620 < mouse_pointer[1] < 665:
-                        question_number += 1
-                        if not ABCD[2][1]:
-                            endgame(pygame, window, width, question_number,ABCD)
-                        else:
-                            questions = load_question(questions, 10)
-                            start_time = pygame.time.get_ticks()
-                            full_time = 20
-                            load_next_question = True
-                    if 675 < mouse_pointer[0] < 1076 and 620 < mouse_pointer[1] < 665:
-                        question_number += 1
-                        if not ABCD[3][1]:
-                            
-                            endgame(pygame, window, width, question_number,ABCD)
-                        else:
-                            questions = load_question(questions, 10)
-                            start_time = pygame.time.get_ticks()
-                            full_time = 20
-                            load_next_question = True
-
+                    for j in range(4):
+                        if hover_cond(j, mouse_pointer):
+                            question_number += 1
+                            if not ABCD[j][1]:
+                                endgame(pygame, window, width, question_number,ABCD)
+                            else:
+                                questions = load_question(questions, 10)
+                                start_time = pygame.time.get_ticks()
+                                full_time = 20
+                                load_next_question = True
+                            break
                     if 1215 < mouse_pointer[0] < 1280 and 0 < mouse_pointer[1] < 62:
                         sys.exit()
