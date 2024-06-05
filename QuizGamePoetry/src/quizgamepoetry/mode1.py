@@ -146,7 +146,7 @@ def mode1_play(window, width):
                                 start_time = pygame.time.get_ticks()
                                 full_time = 30
                                 load_next_question = True
-                                break
+                            break
 
                     if 520 < mouse_pointer[0] < 590 and 310 < mouse_pointer[1] < 380 and not used_lifebuoy_50:
                         used_lifebuoy_50 = True
