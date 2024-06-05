@@ -42,6 +42,5 @@ def parse_question(question):
     category = question['category']
     incorrect_answers = question['incorrect_answers']
     options = [[correct_answer, True] if (i == 0) else [incorrect_answers[i-1], False] for i in range(4)]
-    #options = [(correct_answer, True)] + [(ans, False) for ans in incorrect_answers]
     random.shuffle(options)
     return q_text, options, category

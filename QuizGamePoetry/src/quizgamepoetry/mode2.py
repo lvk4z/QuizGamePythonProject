@@ -13,11 +13,7 @@ def load_image_by_name(name_):
 def endgame(pygame, window, width, question_number, ABCD):
     finish_bg = load_image_by_name('/game/finish_bg.jpg')
     font = pygame.font.SysFont('arial', 30)
-
-    for i in range(0, 4):
-            if ABCD[i][1]:
-                correct  = ABCD[i][0]
-                
+    correct = [ABCD[i][0] for i in range(4) if ABCD[i][1]][0]
 
     if ( 2 <= question_number <= 12):
         string = "Niestety to koniec gry. Udało ci się wygrać 1000 zł  !!! Poprawną odpowiedzią było: " + correct
@@ -74,7 +70,6 @@ def mode2_play(window, width):
     hidden_answers = []
     questions = {'easy': [], 'medium': [], 'hard': []}
     questions = load_question(questions, 10)
-
 
     while running:
         mouse_pointer = pygame.mouse.get_pos()

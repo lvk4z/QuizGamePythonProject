@@ -14,14 +14,10 @@ def endgame(pygame, window, width, question_number, ABCD):
     finish_bg = load_image_by_name('/game/finish_bg.jpg')
     font = pygame.font.SysFont('arial', 30)
 
-    for i in range(0, 4):
-            if ABCD[i][1]:
-                correct  = ABCD[i][0]
-                
+    correct = [ABCD[i][0] for i in range(4) if ABCD[i][1]][0]
 
     if ( 2 <= question_number <= 12):
         string = "Niestety to koniec gry. Udało ci się wygrać 1000 zł  !!! Poprawną odpowiedzią było: " + correct
-
     elif (question_number >= 13):
         string = "Gratulacje mistrzu, wygrywasz 1 000 000 zł!!!! "
     else:
@@ -36,16 +32,15 @@ def endgame(pygame, window, width, question_number, ABCD):
 
         window.blit(finish_bg, (0, 0))
         window.blit(text, text_rect)
-        if mouse_pointer[0] > 534 and mouse_pointer[0] < 745 and mouse_pointer[1] > 481 and mouse_pointer[1] < 512:
+        if 534 < mouse_pointer[0] < 745 and 481 < mouse_pointer[1] < 512:
             pass
         else: 
             pass
-        if mouse_pointer[0] > 534 and mouse_pointer[0] < 745 and mouse_pointer[1] > 520 and mouse_pointer[1] < 551:
+        if 534 < mouse_pointer[0] < 745 and 520 < mouse_pointer[1] < 551:
             pass
         else: 
             pass
         pygame.display.update()
-
         for event in pygame.event.get():
                 if event.type == QUIT:
                     run = False
@@ -60,6 +55,7 @@ def endgame(pygame, window, width, question_number, ABCD):
                                 sys.exit()
 
 def mode1_play(window, width):
+
     bg_img = load_image_by_name('/game/bg.jpg')
     option_hover = load_image_by_name('/game/answer_hover.png')
     score_table = [load_image_by_name('/game/score_table1b.jpg')]
@@ -117,11 +113,12 @@ def mode1_play(window, width):
 
         
         if time_left <= 25 or used_lifebuoy_friend:
+            dy, dx = 30, 370
             option_frames = [
-                    pygame.Rect(210, 560, 370, 30),
-                    pygame.Rect(690, 560, 370, 30),
-                    pygame.Rect(210, 630, 370, 30),
-                    pygame.Rect(690, 630, 370, 30)
+                    pygame.Rect(210, 560, dx, dy),
+                    pygame.Rect(690, 560, dx, dy),
+                    pygame.Rect(210, 630, dx, dy),
+                    pygame.Rect(690, 630, dx, dy)
                 ]
             if not used_lifebuoy_friend:
                 correct_answer_index = next(i for i, ans in enumerate(ABCD) if ans[1])
