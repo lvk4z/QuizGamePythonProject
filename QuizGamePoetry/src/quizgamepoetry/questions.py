@@ -2,45 +2,56 @@ import random
 import requests
 import urllib.parse
 
-def fetch_questions(difficulty, category):
-    """Funkcja pobierająca pytanie z API"""
-    url = f'https://opentdb.com/api.php?amount=1&category={category}&difficulty={difficulty}&type=multiple&encode=url3986'
+
+def fetch_question(difficulty, category):
+    """Fetch a single question from the Open Trivia Database API."""
+    url = f"https://opentdb.com/api.php?amount=1&category={category}&difficulty={difficulty}&type=multiple&encode=url3986"
     try:
         response = requests.get(url)
-    except (ConnectionError, TimeoutError):
-        print("Response crashed")
+        response.raise_for_status()
+    except (requests.ConnectionError, requests.Timeout) as e:
+        print(f"Error fetching question: {e}")
+        return None  
 
     if response.status_code == 200:
-        results = response.json()['results']
-        for question in results:
-            question['question'] = urllib.parse.unquote(question['question'])
-            question['correct_answer'] = urllib.parse.unquote(question['correct_answer'])
-            question['incorrect_answers'] = [urllib.parse.unquote(ans) for ans in question['incorrect_answers']]
-        return results
+        results = response.json()["results"]
+        question = results[0]
+        question["question"] = urllib.parse.unquote(question["question"])
+        question["correct_answer"] = urllib.parse.unquote(question["correct_answer"])
+        question["incorrect_answers"] = [
+            urllib.parse.unquote(ans) for ans in question["incorrect_answers"]
+        ]
+        return question
     else:
-        return fetch_questions(difficulty,category)
+        print(f"Trying to fetch question again, reason: {response.status_code}")
+        #
+        return fetch_question(difficulty,category)
 
-def load_question(questions, number):
-    """Funkcja dopasowująca poziom trudności pytania i jego kategorię"""
-    categories = [9, 22, 23, 27]
-    if number < 3:
-        difficulty = 'easy'
-    elif number < 8:
-        difficulty = 'medium'
+
+def get_difficulty_level(question_number):
+    """Map question number to difficulty level."""
+    if question_number < 3:
+        return "easy"
+    elif question_number < 8:
+        return "medium"
     else:
-        difficulty = 'hard'
-    n = random.randint(0,3)
-    questions[difficulty].extend(fetch_questions(difficulty, categories[n]))
-    
-    return questions
+        return "hard"
+
+
+def load_question(question_number):
+    """Load question from the API and update the questions dictionary."""
+    categories = [9, 22, 10, 27]
+    difficulty = get_difficulty_level(question_number)
+    category = random.choice(categories)
+    return fetch_question(difficulty, category)
 
 
 def parse_question(question):
-    """Funkcja parsująca pytanie z API, zwraca zestaw pomieszanych odpowiedzi ABCD"""
-    q_text = question['question']
-    correct_answer = question['correct_answer']
-    category = question['category']
-    incorrect_answers = question['incorrect_answers']
-    options = [[correct_answer, True] if (i == 0) else [incorrect_answers[i-1], False] for i in range(4)]
+    """Parse the question from the API and return shuffled options with the correct answer."""
+    q_text = question["question"]
+    correct_answer = question["correct_answer"]
+    category = question["category"]
+    incorrect_answers = question["incorrect_answers"]
+    options = [[correct_answer, True]] + [[ans, False] for ans in incorrect_answers]
     random.shuffle(options)
     return q_text, options, category
