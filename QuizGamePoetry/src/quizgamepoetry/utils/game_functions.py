@@ -17,13 +17,13 @@ def load_images():
             f"{base_path}/game/answer_hover.png"
         ).convert_alpha(),
         "score_table": [
-            pygame.image.load(f"{base_path}/game/score_table1b.jpg").convert_alpha()
+            pygame.image.load(f"{base_path}/game/score_table1.png").convert_alpha()
         ],
     }
 
     for i in range(2, 13):
         images["score_table"].append(
-            pygame.image.load(f"{base_path}/game/score_table{i}.jpg").convert_alpha()
+            pygame.image.load(f"{base_path}/game/score_table{i}.png").convert_alpha()
         )
 
     images["lifebuoy_50"] = pygame.image.load(
@@ -37,6 +37,9 @@ def load_images():
     ).convert_alpha()
     images["wrong_answer_hover"] = pygame.image.load(
         f"{base_path}/game/wrong_answer_hover.jpg"
+    ).convert_alpha()
+    images["clock"] = pygame.image.load(
+        f"{base_path}/game/clock_bg.png"
     ).convert_alpha()
 
     return images

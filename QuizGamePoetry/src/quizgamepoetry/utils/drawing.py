@@ -27,12 +27,12 @@ def draw_timer(window, timerfont, time_left, width, bg_image):
     width (int): Width of the window.
     """
 
-    bg_image = pygame.transform.scale(bg_image, (210, 210))
+    bg_image = pygame.transform.scale(bg_image, (450, 450))
 
     current_time = time_left
     pulsating_factor = 1 + 0.5 * math.sin(current_time * 2.0)
 
-    scaled_width = int(150 + 80 * pulsating_factor)
+    scaled_width = int(450 + 100 * pulsating_factor)
     scaled_image = pygame.transform.scale(bg_image, (scaled_width, scaled_width))
 
     bg_position = (width // 2, 170)

@@ -115,7 +115,7 @@ def mode1_play(window, width):
             endgame(pygame, window, width, question_number, option_answers)
 
         draw_background(window, images["bg_img"])
-        draw_timer(window, timerfont, time_left, width, images["lifebuoy_time"])
+        draw_timer(window, timerfont, time_left, width, images["clock"])
         draw_score_table(window, images["score_table"], question_number)
 
         if load_next_question:
