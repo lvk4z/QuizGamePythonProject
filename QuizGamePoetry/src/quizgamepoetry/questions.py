@@ -1,6 +1,7 @@
 import random
 import requests
 import urllib.parse
+import time
 
 
 def fetch_question(difficulty, category):
@@ -8,7 +9,6 @@ def fetch_question(difficulty, category):
     url = f"https://opentdb.com/api.php?amount=1&category={category}&difficulty={difficulty}&type=multiple&encode=url3986"
     try:
         response = requests.get(url)
-        response.raise_for_status()
     except (requests.ConnectionError, requests.Timeout) as e:
         print(f"XDASCXASXASError fetching question: {e}")
         return None  
@@ -24,7 +24,7 @@ def fetch_question(difficulty, category):
         return question
     elif response.status_code == 429:
         print("Too many requests. Waiting before retrying...")
-        time.sleep(5)
+        
         return fetch_question(difficulty, category)
     else:
         print(f"Trying to fetch question again, reason: {response.status_code}")

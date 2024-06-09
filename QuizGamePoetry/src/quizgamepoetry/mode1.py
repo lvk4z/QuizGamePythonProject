@@ -122,6 +122,7 @@ def mode1_play(window, width):
                                 )
                                 pygame.display.update()
                                 sounds["disappointment"].play()
+                                sounds["background_music"].stop()
                                 pygame.time.wait(2000)
 
                                 endgame(
@@ -133,6 +134,7 @@ def mode1_play(window, width):
                                 )
                             else:
                                 sounds["applause"].play()
+                                pygame.time.wait(2000)
                                 start_time = pygame.time.get_ticks()
                                 full_time = 30
                                 load_next_question = True

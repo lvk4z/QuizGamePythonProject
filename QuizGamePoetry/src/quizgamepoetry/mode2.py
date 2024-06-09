@@ -1,7 +1,7 @@
 import sys
 import pygame
 from pygame.locals import *
-from utils.game_functions import load_images, highlight_correct_answer
+from utils.game_functions import load_images, highlight_correct_answer, load_sounds
 from utils.drawing import (
     draw_background,
     draw_timer,
@@ -27,6 +27,9 @@ def mode2_play(window, width):
     width (int): The width of the game window.
     """
     images = load_images()
+    sounds = load_sounds()
+
+    sounds["background_music"].play(-1)
 
     timerfont = pygame.font.SysFont("arial", 130)
     qafont = pygame.font.SysFont("arial", 22)
@@ -51,12 +54,12 @@ def mode2_play(window, width):
             endgame(pygame, window, width, question_number, option_answers)
 
         draw_background(window, images["bg_img"])
-        draw_timer(window, timerfont, time_left, width, images["lifebuoy_time"])
+        draw_timer(window, timerfont, time_left, width, images["clock"])
         draw_score_table(window, images["score_table"], question_number)
 
         if load_next_question:
             hidden_answers = []
-            question_data = load_question(question_number)
+            question_data = load_question(10)
             current_question, option_answers, category = parse_question(question_data)
             load_next_question = False
 
@@ -122,6 +125,8 @@ def mode2_play(window, width):
                                     images["wrong_answer_hover"],
                                 )
                                 pygame.display.update()
+                                sounds["disappointment"].play()
+                                sounds["background_music"].stop()
                                 pygame.time.wait(2000)
 
                                 endgame(
@@ -132,7 +137,8 @@ def mode2_play(window, width):
                                     option_answers,
                                 )
                             else:
-
+                                sounds["applause"].play()
+                                pygame.time.wait(2000)
                                 start_time = pygame.time.get_ticks()
                                 full_time = 30
                                 load_next_question = True
