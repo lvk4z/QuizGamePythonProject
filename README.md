@@ -28,3 +28,11 @@ szata graficzna - pod kierunek projektu,
 podpięcie API do pytań,
 
 - zrobione z opóźnieniem o jedne zajęcia
+
+Etap 5: Cel:
+poprawa struktury kodu
+zmiana szans na dobrą odpowiedź
+animacje
+tłmaczenia
+
+- tłumaczenie zamieniliśmy na zrobienie efetków dźwiękowych
