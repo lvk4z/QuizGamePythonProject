@@ -1,7 +1,22 @@
 import pygame
 import time
 
+def load_sounds():
+    """
+    Load all necessary sound files and return them in a dictionary.
+    
+    Returns:
+        dict: A dictionary containing loaded sound files.
+    """
+    base_path = "QuizGamePoetry/src/quizgamepoetry/resources/sounds"
 
+    sounds = {
+        "background_music": pygame.mixer.Sound(f"{base_path}/background_music.mp3"),
+        "applause": pygame.mixer.Sound(f"{base_path}/applause.mp3"),
+        "disappointment": pygame.mixer.Sound(f"{base_path}/disappointment.mp3"),
+    }
+
+    return sounds
 def load_images():
     """
     Load all necessary images and return them in a dictionary.

@@ -10,7 +10,7 @@ def fetch_question(difficulty, category):
         response = requests.get(url)
         response.raise_for_status()
     except (requests.ConnectionError, requests.Timeout) as e:
-        print(f"Error fetching question: {e}")
+        print(f"XDASCXASXASError fetching question: {e}")
         return None  
 
     if response.status_code == 200:
@@ -22,9 +22,12 @@ def fetch_question(difficulty, category):
             urllib.parse.unquote(ans) for ans in question["incorrect_answers"]
         ]
         return question
+    elif response.status_code == 429:
+        print("Too many requests. Waiting before retrying...")
+        time.sleep(5)
+        return fetch_question(difficulty, category)
     else:
         print(f"Trying to fetch question again, reason: {response.status_code}")
-        #
         return fetch_question(difficulty,category)
 
 

@@ -1,7 +1,7 @@
 import sys
 import pygame
 from pygame.locals import *
-from utils.game_functions import load_images, highlight_correct_answer
+from utils.game_functions import load_images, highlight_correct_answer, load_sounds
 from utils.drawing import (
     draw_background,
     draw_timer,
@@ -14,74 +14,6 @@ from questions import load_question, parse_question
 from utils.hover_and_event_handling import hover_cond, mark_wrong_option
 from lifebuoys import use_friends_help, use_fifty_fifty
 
-
-def endgame(pygame_module, window, window_width, question_number, answer_options):
-    """
-    Ends the game and displays the final message.
-
-    Args:
-    pygame_module: The pygame module.
-    window (pygame.Surface): The game window.
-    window_width (int): The width of the game window.
-    question_number (int): The current question number.
-    answer_options (list): List of options with their correctness.
-    """
-    finish_bg = pygame_module.image.load(
-        "QuizGamePoetry/src/quizgamepoetry/resources/game/finish_bg.jpg"
-    ).convert_alpha()
-    font = pygame_module.font.SysFont("arial", 30)
-
-    correct = [answer_options[i][0] for i in range(4) if answer_options[i][1]][0]
-
-    messages = {
-        range(
-            2, 13
-        ): f"Niestety to koniec gry. Udało ci się wygrać 1000 zł  !!! Poprawną odpowiedzią było: {correct}",
-        range(13, 100): "Gratulacje mistrzu, wygrywasz 1 000 000 zł!!!!",
-        range(
-            0, 2
-        ): f"Niestety to koniec gry. Nic nie wygrałeś :( Poprawną odpowiedzią było: {correct}",
-    }
-
-    for question_range, message in messages.items():
-        if question_number in question_range:
-            string = message
-            break
-
-    text = font.render(string, True, (184, 193, 209))
-    text_rect = text.get_rect(center=(window_width // 2, 280))
-
-    run = True
-    while run:
-        mouse_pointer = pygame_module.mouse.get_pos()
-
-        window.blit(finish_bg, (0, 0))
-        window.blit(text, text_rect)
-
-        hover_conditions = {
-            (534, 745, 481, 512): lambda: None,
-            (534, 745, 520, 551): lambda: None,
-        }
-
-        for (x1, x2, y1, y2), action in hover_conditions.items():
-            if x1 < mouse_pointer[0] < x2 and y1 < mouse_pointer[1] < y2:
-                action()
-
-        pygame_module.display.update()
-        for event in pygame_module.event.get():
-            if event.type == pygame_module.QUIT:
-                run = False
-            if event.type == pygame_module.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    if 540 < mouse_pointer[0] < 740:
-                        if 365 < mouse_pointer[1] < 420:
-                            run = False
-                            mode1_play(window, window_width)
-                        elif 476 < mouse_pointer[1] < 535:
-                            pygame_module.quit()
-                            sys.exit()
-
-
 def mode1_play(window, width):
     """
     Main function to play mode 1 of the game.
@@ -91,6 +23,9 @@ def mode1_play(window, width):
     width (int): The width of the game window.
     """
     images = load_images()
+    sounds = load_sounds()
+
+    sounds["background_music"].play(-1)
 
     timerfont = pygame.font.SysFont("arial", 130)
     qafont = pygame.font.SysFont("arial", 22)
@@ -186,6 +121,7 @@ def mode1_play(window, width):
                                     images["wrong_answer_hover"],
                                 )
                                 pygame.display.update()
+                                sounds["disappointment"].play()
                                 pygame.time.wait(2000)
 
                                 endgame(
@@ -196,7 +132,7 @@ def mode1_play(window, width):
                                     option_answers,
                                 )
                             else:
-
+                                sounds["applause"].play()
                                 start_time = pygame.time.get_ticks()
                                 full_time = 30
                                 load_next_question = True
@@ -228,3 +164,69 @@ def mode1_play(window, width):
                         used_lifebuoy_friend = True
                     elif 1215 < mouse_pointer[0] < 1280 and 0 < mouse_pointer[1] < 62:
                         sys.exit()
+
+def endgame(pygame_module, window, window_width, question_number, answer_options):
+    """
+    Ends the game and displays the final message.
+
+    Args:
+    pygame_module: The pygame module.
+    window (pygame.Surface): The game window.
+    window_width (int): The width of the game window.
+    question_number (int): The current question number.
+    answer_options (list): List of options with their correctness.
+    """
+    finish_bg = pygame_module.image.load(
+        "QuizGamePoetry/src/quizgamepoetry/resources/game/finish_bg.jpg"
+    ).convert_alpha()
+    font = pygame_module.font.SysFont("arial", 30)
+
+    correct = [answer_options[i][0] for i in range(4) if answer_options[i][1]][0]
+
+    messages = {
+        range(
+            2, 13
+        ): f"Niestety to koniec gry. Udało ci się wygrać 1000 zł  !!! Poprawną odpowiedzią było: {correct}",
+        range(13, 100): "Gratulacje mistrzu, wygrywasz 1 000 000 zł!!!!",
+        range(
+            0, 2
+        ): f"Niestety to koniec gry. Nic nie wygrałeś :( Poprawną odpowiedzią było: {correct}",
+    }
+
+    for question_range, message in messages.items():
+        if question_number in question_range:
+            string = message
+            break
+
+    text = font.render(string, True, (184, 193, 209))
+    text_rect = text.get_rect(center=(window_width // 2, 280))
+
+    run = True
+    while run:
+        mouse_pointer = pygame_module.mouse.get_pos()
+
+        window.blit(finish_bg, (0, 0))
+        window.blit(text, text_rect)
+
+        hover_conditions = {
+            (534, 745, 481, 512): lambda: None,
+            (534, 745, 520, 551): lambda: None,
+        }
+
+        for (x1, x2, y1, y2), action in hover_conditions.items():
+            if x1 < mouse_pointer[0] < x2 and y1 < mouse_pointer[1] < y2:
+                action()
+
+        pygame_module.display.update()
+        for event in pygame_module.event.get():
+            if event.type == pygame_module.QUIT:
+                run = False
+            if event.type == pygame_module.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if 540 < mouse_pointer[0] < 740:
+                        if 365 < mouse_pointer[1] < 420:
+                            run = False
+                            mode1_play(window, window_width)
+                        elif 476 < mouse_pointer[1] < 535:
+                            pygame_module.quit()
+                            sys.exit()
