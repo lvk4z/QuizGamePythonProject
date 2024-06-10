@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bafa2368-7bc5-4924-b464-b42b12a63587" name="Changes" comment="disabling buttons after answering">
+    <list default="true" id="bafa2368-7bc5-4924-b464-b42b12a63587" name="Changes" comment="removing mode2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QuizGamePoetry/src/quizgamepoetry/lifebuoys.py" beforeDir="false" afterPath="$PROJECT_DIR$/QuizGamePoetry/src/quizgamepoetry/lifebuoys.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QuizGamePoetry/src/quizgamepoetry/mainMenu.py" beforeDir="false" afterPath="$PROJECT_DIR$/QuizGamePoetry/src/quizgamepoetry/mainMenu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QuizGamePoetry/src/quizgamepoetry/mode1.py" beforeDir="false" afterPath="$PROJECT_DIR$/QuizGamePoetry/src/quizgamepoetry/gameEngine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QuizGamePoetry/src/quizgamepoetry/mode2.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/QuizGamePoetry/src/quizgamepoetry/gameEngine.py" beforeDir="false" afterPath="$PROJECT_DIR$/QuizGamePoetry/src/quizgamepoetry/gameEngine.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/QuizGamePoetry/src/quizgamepoetry/utils/game_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/QuizGamePoetry/src/quizgamepoetry/utils/game_functions.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -78,7 +75,7 @@
       <workItem from="1712664811258" duration="955000" />
       <workItem from="1712674764595" duration="1338000" />
       <workItem from="1712697801157" duration="5333000" />
-      <workItem from="1718041007465" duration="4131000" />
+      <workItem from="1718041007465" duration="5718000" />
     </task>
     <task id="LOCAL-00001" summary="adding json file">
       <option name="closed" value="true" />
@@ -104,7 +101,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712619249788</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="removing mode2">
+      <option name="closed" value="true" />
+      <created>1718045177266</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1718045177266</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -113,11 +118,12 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="adding json file" />
     <MESSAGE value="disabling buttons after answering" />
-    <option name="LAST_COMMIT_MESSAGE" value="disabling buttons after answering" />
+    <MESSAGE value="removing mode2" />
+    <option name="LAST_COMMIT_MESSAGE" value="removing mode2" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/QuizGamePythonProject$mode1.coverage" NAME="mode1 Coverage Results" MODIFIED="1712702736922" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/QuizGame/src" />
     <SUITE FILE_PATH="coverage/QuizGamePythonProject$gameEngine.coverage" NAME="gameEngine Coverage Results" MODIFIED="1718045051952" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/QuizGamePoetry/src/quizgamepoetry" />
-    <SUITE FILE_PATH="coverage/QuizGamePythonProject$mainMenu.coverage" NAME="mainMenu Coverage Results" MODIFIED="1718045110574" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/QuizGamePoetry/src/quizgamepoetry" />
+    <SUITE FILE_PATH="coverage/QuizGamePythonProject$mainMenu.coverage" NAME="mainMenu Coverage Results" MODIFIED="1718047491538" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/QuizGamePoetry/src/quizgamepoetry" />
   </component>
 </project>

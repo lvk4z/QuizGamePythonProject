@@ -1,68 +1,71 @@
 import pygame
 import time
 
+global base_path_
+base_path_ = "C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources"
 def load_sounds():
+    global base_path_
     """
     Load all necessary sound files and return them in a dictionary.
     
     Returns:
         dict: A dictionary containing loaded sound files.
     """
-    base_path = "C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/sounds"
+    base_ = base_path_ + "/sounds"
 
     sounds = {
-        "background_music": pygame.mixer.Sound(f"{base_path}/background_music.mp3"),
-        "applause": pygame.mixer.Sound(f"{base_path}/applause.mp3"),
-        "disappointment": pygame.mixer.Sound(f"{base_path}/disappointment.mp3"),
+        "background_music": pygame.mixer.Sound(f"{base_}/background_music.mp3"),
+        "applause": pygame.mixer.Sound(f"{base_}/applause.mp3"),
+        "disappointment": pygame.mixer.Sound(f"{base_}/disappointment.mp3"),
     }
 
     return sounds
 def load_images():
+    global base_path_
     """
     Load all necessary images and return them in a dictionary.
 
     Returns:
     dict: Dictionary containing loaded images.
     """
-    base_path = "C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources"
 
     images = {
-        "bg_img": pygame.image.load(f"{base_path}/game/bg.jpg").convert_alpha(),
+        "bg_img": pygame.image.load(f"{base_path_}/game/bg.jpg").convert_alpha(),
         "option_hover": pygame.image.load(
-            f"{base_path}/game/answer_hover.png"
+            f"{base_path_}/game/answer_hover.png"
         ).convert_alpha(),
         "score_table": [
-            pygame.image.load(f"{base_path}/game/score_table1.png").convert_alpha()
+            pygame.image.load(f"{base_path_}/game/score_table1.png").convert_alpha()
         ],
     }
 
     for i in range(2, 13):
         images["score_table"].append(
-            pygame.image.load(f"{base_path}/game/score_table{i}.png").convert_alpha()
+            pygame.image.load(f"{base_path_}/game/score_table{i}.png").convert_alpha()
         )
     images["friends"] = pygame.image.load(
-        f"{base_path}/game/friends.jpg").convert_alpha()
+        f"{base_path_}/game/friends.jpg").convert_alpha()
 
     images["menu_bg"] = pygame.image.load(
-        f"{base_path}/menu_bg.jpg" ).convert_alpha()
+        f"{base_path_}/menu_bg.jpg" ).convert_alpha()
 
     images["finish_bg"] = pygame.image.load(
-        f"{base_path}/game/finish_bg.jpg").convert_alpha()
+        f"{base_path_}/game/finish_bg.jpg").convert_alpha()
 
     images["lifebuoy_50"] = pygame.image.load(
-        f"{base_path}/game/lifebuoy_50.png"
+        f"{base_path_}/game/lifebuoy_50.png"
     ).convert_alpha()
     images["lifebuoy_friend"] = pygame.image.load(
-        f"{base_path}/game/lifebuoy_friend.png"
+        f"{base_path_}/game/lifebuoy_friend.png"
     ).convert_alpha()
     images["lifebuoy_time"] = pygame.image.load(
-        f"{base_path}/game/lifebuoy_time.png"
+        f"{base_path_}/game/lifebuoy_time.png"
     ).convert_alpha()
     images["wrong_answer_hover"] = pygame.image.load(
-        f"{base_path}/game/wrong_answer_hover.jpg"
+        f"{base_path_}/game/wrong_answer_hover.jpg"
     ).convert_alpha()
     images["clock"] = pygame.image.load(
-        f"{base_path}/game/clock_bg.png"
+        f"{base_path_}/game/clock_bg.png"
     ).convert_alpha()
 
     return images

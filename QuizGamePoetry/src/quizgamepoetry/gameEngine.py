@@ -96,6 +96,8 @@ def mode_play(window, width, hardMode = False):
                 )
             else:
                 correct_answer_index = suggested_by_friend
+                if correct_answer_index in hidden_answers:
+                    correct_answer_index = next(i for i, ans in enumerate(option_answers) if ans[1])
 
             highlight_correct_answer(
                 window,
@@ -140,6 +142,7 @@ def mode_play(window, width, hardMode = False):
                                 sounds["applause"].play()
                                 pygame.time.wait(2000)
                                 start_time = pygame.time.get_ticks()
+                                full_time = 30 if not hardMode else 20
                                 load_next_question = True
                             break
                     if not hardMode:
