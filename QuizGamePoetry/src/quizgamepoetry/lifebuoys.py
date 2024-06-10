@@ -1,5 +1,6 @@
-from mode1 import *
+from gameEngine import *
 import random
+from utils.game_functions import load_images
 
 
 def use_fifty_fifty(answers):
@@ -28,9 +29,8 @@ def use_friends_help(window, question_category, answers):
     Returns:
     int: Index of the correct answer suggested by the friend.
     """
-    friends = pygame.image.load(
-        "QuizGamePoetry/src/quizgamepoetry/resources/game/friends.jpg"
-    ).convert_alpha()
+    images_buoys = load_images()
+    friends = images_buoys["friends"]
     running = True
     chosen_friend = None
     while running:
@@ -39,7 +39,7 @@ def use_friends_help(window, question_category, answers):
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == QUIT:
-                run = False
+                running = False
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if 350 < mouse_pointer[0] < 500 and 60 < mouse_pointer[1] < 240:

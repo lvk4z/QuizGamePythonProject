@@ -13,8 +13,11 @@ from utils.drawing import (
 from questions import load_question, parse_question
 from utils.hover_and_event_handling import hover_cond, mark_wrong_option
 from lifebuoys import use_friends_help, use_fifty_fifty
+global images, sounds
 
-def mode1_play(window, width):
+
+def mode_play(window, width, hardMode = False):
+    global images, sounds
     """
     Main function to play mode 1 of the game.
 
@@ -24,12 +27,12 @@ def mode1_play(window, width):
     """
     images = load_images()
     sounds = load_sounds()
-
     sounds["background_music"].play(-1)
 
     timerfont = pygame.font.SysFont("arial", 130)
     qafont = pygame.font.SysFont("arial", 22)
-    full_time = 30
+    full_time = 30 if not hardMode else 20
+    time_break = full_time - 5
     question_number = 0
     running = True
     load_next_question = True
@@ -47,7 +50,7 @@ def mode1_play(window, width):
         if int(time_left) >= 0 and question_number < 12:
             pygame.display.update()
         else:
-            endgame(pygame, window, width, question_number, option_answers)
+            endgame(pygame, window, width, question_number, option_answers, hardMode)
 
         draw_background(window, images["bg_img"])
         draw_timer(window, timerfont, time_left, width, images["clock"])
@@ -55,7 +58,7 @@ def mode1_play(window, width):
 
         if load_next_question:
             hidden_answers = []
-            question_data = load_question(question_number)
+            question_data = load_question(question_number if not hardMode else 10)
             current_question, option_answers, category = parse_question(question_data)
             load_next_question = False
 
@@ -68,17 +71,18 @@ def mode1_play(window, width):
             images["option_hover"],
             hidden_answers,
         )
-        draw_lifebuoys(
-            window,
-            images["lifebuoy_50"],
-            images["lifebuoy_time"],
-            images["lifebuoy_friend"],
-            used_lifebuoy_50,
-            used_lifebuoy_time,
-            suggested_by_friend,
-        )
+        if not hardMode:
+            draw_lifebuoys(
+                window,
+                images["lifebuoy_50"],
+                images["lifebuoy_time"],
+                images["lifebuoy_friend"],
+                used_lifebuoy_50,
+                used_lifebuoy_time,
+                suggested_by_friend,
+            )
 
-        if time_left <= 25 or used_lifebuoy_friend:
+        if time_left <= time_break or used_lifebuoy_friend:
             dy, dx = 30, 370
             option_frames = [
                 pygame.Rect(210, 560, dx, dy),
@@ -105,7 +109,8 @@ def mode1_play(window, width):
 
         for event in pygame.event.get():
             if event.type == QUIT:
-                running = False
+                sounds["background_music"].stop()
+                sys.exit()
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     for j in range(4):
@@ -130,44 +135,44 @@ def mode1_play(window, width):
                                     window,
                                     width,
                                     question_number,
-                                    option_answers,
-                                )
+                                    option_answers, hardMode)
                             else:
                                 sounds["applause"].play()
                                 pygame.time.wait(2000)
                                 start_time = pygame.time.get_ticks()
-                                full_time = 30
                                 load_next_question = True
                             break
+                    if not hardMode:
+                        if (
+                            520 < mouse_pointer[0] < 590
+                            and 310 < mouse_pointer[1] < 380
+                            and not used_lifebuoy_50
+                        ):
+                            used_lifebuoy_50 = True
+                            hidden_answers = use_fifty_fifty(option_answers)
+                        elif (
+                            600 < mouse_pointer[0] < 670
+                            and 310 < mouse_pointer[1] < 380
+                            and not used_lifebuoy_time
+                        ):
+                            used_lifebuoy_time = True
+                            full_time += 30
+                        elif (
+                            680 < mouse_pointer[0] < 750
+                            and 310 < mouse_pointer[1] < 380
+                            and suggested_by_friend < 0
+                        ):
+                            full_time += 5
+                            suggested_by_friend = use_friends_help(
+                                window, category, option_answers
+                            )
+                            used_lifebuoy_friend = True
+                        elif 1215 < mouse_pointer[0] < 1280 and 0 < mouse_pointer[1] < 62:
+                            sys.exit()
 
-                    if (
-                        520 < mouse_pointer[0] < 590
-                        and 310 < mouse_pointer[1] < 380
-                        and not used_lifebuoy_50
-                    ):
-                        used_lifebuoy_50 = True
-                        hidden_answers = use_fifty_fifty(option_answers)
-                    elif (
-                        600 < mouse_pointer[0] < 670
-                        and 310 < mouse_pointer[1] < 380
-                        and not used_lifebuoy_time
-                    ):
-                        used_lifebuoy_time = True
-                        full_time += 30
-                    elif (
-                        680 < mouse_pointer[0] < 750
-                        and 310 < mouse_pointer[1] < 380
-                        and suggested_by_friend < 0
-                    ):
-                        full_time += 5
-                        suggested_by_friend = use_friends_help(
-                            window, category, option_answers
-                        )
-                        used_lifebuoy_friend = True
-                    elif 1215 < mouse_pointer[0] < 1280 and 0 < mouse_pointer[1] < 62:
-                        sys.exit()
 
-def endgame(pygame_module, window, window_width, question_number, answer_options):
+def endgame(pygame_module, window, window_width, question_number, answer_options, hardMode = False):
+    global images, sounds
     """
     Ends the game and displays the final message.
 
@@ -178,9 +183,8 @@ def endgame(pygame_module, window, window_width, question_number, answer_options
     question_number (int): The current question number.
     answer_options (list): List of options with their correctness.
     """
-    finish_bg = pygame_module.image.load(
-        "QuizGamePoetry/src/quizgamepoetry/resources/game/finish_bg.jpg"
-    ).convert_alpha()
+
+    finish_bg = images["finish_bg"]
     font = pygame_module.font.SysFont("arial", 30)
 
     correct = [answer_options[i][0] for i in range(4) if answer_options[i][1]][0]
@@ -228,7 +232,7 @@ def endgame(pygame_module, window, window_width, question_number, answer_options
                     if 540 < mouse_pointer[0] < 740:
                         if 365 < mouse_pointer[1] < 420:
                             run = False
-                            mode1_play(window, window_width)
+                            mode_play(window, window_width, hardMode)
                         elif 476 < mouse_pointer[1] < 535:
                             pygame_module.quit()
                             sys.exit()

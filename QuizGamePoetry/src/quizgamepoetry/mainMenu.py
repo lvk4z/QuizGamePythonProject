@@ -1,12 +1,13 @@
-from mode1 import *
-from mode2 import *
+from gameEngine import *
 from pygame.locals import *
-import pygame   
+import pygame
+from utils.game_functions import load_images
 from utils.drawing import draw_background
 from config import WIDTH, HEIGHT, FLAGS, QUIT, MOUSEBUTTONDOWN
 
 window = pygame.display.set_mode((WIDTH, HEIGHT), FLAGS)
-bg_img = pygame.image.load('QuizGamePoetry/src/quizgamepoetry/resources/menu_bg.jpg').convert_alpha()
+images_menu = load_images()
+bg_img = images_menu["menu_bg"]
 
 running = True
 while True:
@@ -21,7 +22,6 @@ while True:
             if event.button == 1:
                 if 540 < mouse_pointer[0] < 740:
                     if 276 < mouse_pointer[1] < 334:
-                        mode1_play(window, WIDTH)
+                        mode_play(window, WIDTH, False)
                     elif 387 < mouse_pointer[1] < 450:
-                        mode2_play(window, WIDTH)
-                        pass
+                        mode_play(window, WIDTH, True)

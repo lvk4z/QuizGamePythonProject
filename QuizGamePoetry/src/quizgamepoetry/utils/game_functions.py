@@ -8,7 +8,7 @@ def load_sounds():
     Returns:
         dict: A dictionary containing loaded sound files.
     """
-    base_path = "QuizGamePoetry/src/quizgamepoetry/resources/sounds"
+    base_path = "C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources/sounds"
 
     sounds = {
         "background_music": pygame.mixer.Sound(f"{base_path}/background_music.mp3"),
@@ -24,7 +24,7 @@ def load_images():
     Returns:
     dict: Dictionary containing loaded images.
     """
-    base_path = "QuizGamePoetry/src/quizgamepoetry/resources"
+    base_path = "C:/QuizGamePythonProject/QuizGamePoetry/src/quizgamepoetry/resources"
 
     images = {
         "bg_img": pygame.image.load(f"{base_path}/game/bg.jpg").convert_alpha(),
@@ -40,6 +40,14 @@ def load_images():
         images["score_table"].append(
             pygame.image.load(f"{base_path}/game/score_table{i}.png").convert_alpha()
         )
+    images["friends"] = pygame.image.load(
+        f"{base_path}/game/friends.jpg").convert_alpha()
+
+    images["menu_bg"] = pygame.image.load(
+        f"{base_path}/menu_bg.jpg" ).convert_alpha()
+
+    images["finish_bg"] = pygame.image.load(
+        f"{base_path}/game/finish_bg.jpg").convert_alpha()
 
     images["lifebuoy_50"] = pygame.image.load(
         f"{base_path}/game/lifebuoy_50.png"
